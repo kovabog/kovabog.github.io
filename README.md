@@ -20,7 +20,7 @@ Each file has a single responsibility.
 index.html              markup only (sections, nav, canvas, dog)
 img/
   icons.svg             SVG sprite (<symbol>s referenced by <use>)
-  dog-run.png           4-frame walk-cycle sprite sheet
+  dog-run.png           3-frame walk-cycle sprite sheet
   dog-sit.png           dog sitting on the "Dog owner" tile
 css/
   base/                 tokens (colors, fonts), reset, typography, reveal/reduced-motion
