@@ -172,7 +172,7 @@ nav a.l:hover{color:var(--ink);background:rgba(20,48,47,.06)}
 html.dragging,html.dragging *{user-select:none;-webkit-user-select:none;cursor:grabbing!important}
 
 /* human */
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:76px}
 .tile{padding:18px 18px 20px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
 .tile:hover{transform:translateY(-5px) rotate(-1deg)}
 .tile svg{width:34px;height:34px;stroke:var(--teal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px}
@@ -269,28 +269,22 @@ footer{position:relative;z-index:1;padding:28px var(--gut) 40px;text-align:right
 .term-foot .ok{color:#7fe3a6}.term-foot .bad{color:#ff8f84}
 /* the dog */
 .dogtile{cursor:pointer}
-.dog{position:fixed;left:0;bottom:4px;z-index:9;width:188px;visibility:hidden;pointer-events:none;will-change:transform}
+.dog{position:fixed;left:0;bottom:4px;z-index:9;width:200px;visibility:hidden;pointer-events:none;will-change:transform}
 .dog-in{position:relative;transform-origin:50% 100%}
-.dog svg{display:block;width:100%;height:auto;pointer-events:auto;cursor:pointer;overflow:visible;filter:drop-shadow(0 8px 8px rgba(20,48,47,.2))}
+.dog-img{display:block;width:100%;height:auto;pointer-events:auto;cursor:pointer;image-rendering:pixelated;filter:drop-shadow(0 8px 8px rgba(20,48,47,.2));transform-origin:50% 100%;user-select:none;-webkit-user-drag:none}
 .dog-say{position:absolute;bottom:92%;left:58%;white-space:nowrap;padding:9px 14px;border-radius:16px 16px 16px 4px;background:#fff;color:var(--ink);font:600 15px/1.2 var(--display);letter-spacing:-.01em;
   box-shadow:0 12px 24px -12px rgba(20,48,47,.5);border:1px solid var(--line);opacity:0;transform:translateY(8px) scale(.85);transform-origin:0 100%;transition:opacity .2s,transform .35s cubic-bezier(.3,1.6,.5,1)}
 .dog.talk .dog-say{opacity:1;transform:none}
-.dog .leg{transform-box:fill-box;transform-origin:50% 5%}
-.dog.running .leg.a{animation:gait .3s linear infinite}
-.dog.running .leg.b{animation:gait .3s linear infinite;animation-delay:-.15s}
-@keyframes gait{0%,100%{transform:rotate(32deg)}50%{transform:rotate(-30deg)}}
-.dog.running .bodyg{animation:trot .15s ease-in-out infinite alternate}
-@keyframes trot{to{transform:translateY(-5px)}}
-.dog .tail{transform-box:view-box;transform-origin:47px 69px;animation:wag .2s ease-in-out infinite alternate}
-@keyframes wag{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
-.dog .headg{transform-box:view-box;transform-origin:150px 50px}
-.dog .jaw{transform-box:view-box;transform-origin:174px 64px}
-.dog.barking .jaw{animation:jaw .32s ease-in-out infinite}
-.dog.barking .headg{animation:bhead .32s ease-in-out infinite}
-@keyframes jaw{0%,100%{transform:rotate(0)}40%{transform:rotate(26deg)}}
-@keyframes bhead{0%,100%{transform:rotate(0)}40%{transform:rotate(-8deg) translateY(-2px)}}
-.dog.air .leg.fr{transform:rotate(-58deg)}.dog.air .leg.bk{transform:rotate(52deg)}
-@media (max-width:560px){.dog{width:132px}.dog-say{font-size:13.5px;left:50%;translate:-62% 0;white-space:normal;width:max-content;max-width:min(230px,78vw);border-radius:16px}}
+.dog.running .dog-img{animation:trot .15s ease-in-out infinite alternate}
+@keyframes trot{from{transform:translateY(0) rotate(0)}to{transform:translateY(-6px) rotate(-1.5deg)}}
+.dog.barking .dog-img{animation:bark .32s ease-in-out infinite}
+@keyframes bark{0%,100%{transform:none}40%{transform:scale(1.06,.95) rotate(-3deg)}}
+.dog.air .dog-img{transform:rotate(-6deg)}
+/* the dog sitting on the "Dog owner" tile */
+.dogtile{position:relative}
+.dog-sit{position:absolute;right:14px;bottom:100%;width:56px;height:auto;margin-bottom:-6px;image-rendering:pixelated;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(20,48,47,.18));transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.dogtile:hover .dog-sit{transform:translateY(-4px) rotate(3deg)}
+@media (max-width:560px){.dog{width:140px}.dog-say{font-size:13.5px;left:50%;translate:-62% 0;white-space:normal;width:max-content;max-width:min(230px,78vw);border-radius:16px}}
 </style>
 </head>
 <body>
@@ -509,6 +503,7 @@ footer{position:relative;z-index:1;padding:28px var(--gut) 40px;text-align:right
     <h2 class="reveal">Also a regular <em>human</em></h2>
     <div class="tiles">
       <div class="card tile reveal dogtile" data-dog role="button" tabindex="0" aria-label="Dog owner: meet the dog">
+        <img class="dog-sit" src="img/dog-sit.png" alt="" width="600" height="735" loading="lazy" decoding="async" draggable="false">
         <svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="21" rx="6.5" ry="5.5"/><circle cx="7.5" cy="14" r="2.6"/><circle cx="13" cy="8.5" r="2.6"/><circle cx="19" cy="8.5" r="2.6"/><circle cx="24.5" cy="14" r="2.6"/></svg>
         <h3>Dog owner</h3><p>Walks set my real deadlines.</p>
       </div>
@@ -559,39 +554,7 @@ footer{position:relative;z-index:1;padding:28px var(--gut) 40px;text-align:right
 
 <div class="dog" id="dog" aria-hidden="true"><div class="dog-in">
 <div class="dog-say">Woof!</div>
-<svg viewBox="0 0 214 140">
-<g class="bodyg" stroke="#24393a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-  <g class="tail"><path d="M50 70 C38 66 29 56 24 41" fill="none" stroke-width="10"/><path d="M50 70 C38 66 29 56 24 41" fill="none" stroke="#fbfbf9" stroke-width="4.500"/></g>
-  <g class="leg b bk"><path d="M50 80 L50 123 Q50 132 58 132 L69 132 Q74 132 72 127 Q70 124 64 123 L64 80Z" fill="#e2e8e8"/></g>
-  <g class="leg a fr"><path d="M124 80 L124 123 Q124 132 132 132 L143 132 Q148 132 146 127 Q144 124 138 123 L138 80Z" fill="#e2e8e8"/></g>
-  <path d="M44 76 C42 60 58 52 82 52 C104 52 122 48 138 50 C154 53 162 68 158 86 C154 100 142 106 126 106 L74 106 C56 106 46 94 44 76Z" fill="#fbfbf9"/>
-  <path d="M122 58 C128 42 142 31 156 27 C165 40 169 54 167 66 C161 77 150 82 139 82 C130 81 124 70 122 58Z" fill="#fbfbf9" stroke="none"/>
-  <path d="M124 52 C132 40 143 31 156 27" fill="none"/>
-  <path d="M165 60 C166 70 163 79 158 87" fill="none"/>
-  <path d="M141 36 C146 50 152 63 160 73" fill="none" stroke="#1d6d68" stroke-width="7"/>
-  <circle cx="158.500" cy="78" r="4.200" fill="#e8b04a" stroke-width="2"/>
-  <path d="M56 72 C65 65 78 69 82 84" fill="none" stroke="#d9e1e1" stroke-width="2.500"/>
-  <path d="M64 101 C84 105 118 105 140 98" fill="none" stroke="#e4eaea" stroke-width="5"/>
-  <g class="leg a bk"><path d="M62 82 L62 123 Q62 132 70 132 L82 132 Q87 132 85 127 Q83 124 77 123 L77 82Z" fill="#fbfbf9"/></g>
-  <g class="leg b fr"><path d="M136 82 L136 123 Q136 132 144 132 L156 132 Q161 132 159 127 Q157 124 151 123 L151 82Z" fill="#fbfbf9"/></g>
-  <ellipse cx="69.500" cy="91" rx="11" ry="13.500" fill="#fbfbf9" stroke="none"/>
-  <ellipse cx="143.500" cy="91" rx="11" ry="13.500" fill="#fbfbf9" stroke="none"/>
-  <g class="headg">
-    <path d="M150 30 L150 4 L165 22Z" fill="#efd5d3"/>
-    <path d="M158 26 L165 1 L176 22Z" fill="#fbfbf9"/>
-    <path d="M161.500 22 L165 9 L171 22Z" fill="#f4aaa8" stroke="none"/>
-    <path d="M176 64 C185 70 196 71 204 68 L199 77 C190 81 181 77 176 64Z" fill="#7a2f33" stroke="none"/>
-    <g class="jaw"><path d="M172 63 C182 70 194 71 203 68 C200 76 191 80 182 78 C176 76 172 70 172 63Z" fill="#fbfbf9"/></g>
-    <path d="M148 38 C149 22 165 13 181 17 C196 21 207 38 210 54 C211 63 208 69 201 70 C187 71 171 66 160 58 C152 52 148 46 148 38Z" fill="#fbfbf9"/>
-    <path d="M168 20 C176 18 184 24 185 32 C186 40 178 44 170 42 C162 40 159 34 161 28 C162 24 165 21 168 20Z" fill="#b0714a" stroke="none"/>
-    <path d="M171.500 33.500 C174 31.500 178 31.500 180 33 C178 35.500 174 36 171.500 33.500Z" fill="#162020" stroke="#162020" stroke-width="1.200"/>
-    <circle cx="177.200" cy="32.800" r=".9" fill="#fff" stroke="none"/>
-    <ellipse cx="196" cy="58" rx="8" ry="5" fill="#f4b9b6" opacity=".55" stroke="none"/>
-    <ellipse cx="205.500" cy="58" rx="5.200" ry="4.800" transform="rotate(20 205.500 58)" fill="#1d2324"/>
-    <path d="M204 66 C196 69 186 68 178 63" fill="none" stroke-width="2"/>
-  </g>
-</g>
-</svg></div></div>
+<img class="dog-img" src="img/dog-walk.png" alt="" width="754" height="562" decoding="async" draggable="false"></div></div>
 <footer class="mono">&copy; 2026 Bohdan Kovalenko. Built with AI agents, reviewed by a human. 3 easter eggs inside, the dog keeps count.</footer>
 
 <script>
@@ -751,7 +714,7 @@ var dog=(function(){
     if(a)await a.finished.catch(function(){});else await wait(950);
     if(g!==gen)return;
     await Promise.all([talk(msg,2700),bark(3)]);if(g!==gen)return;await leave(g);}
-  el.querySelector('svg').addEventListener('click',function(){c('barking',1);sfx.bark();talk('Woof!',900);setTimeout(function(){c('barking',0);},340);});
+  el.querySelector('.dog-img').addEventListener('click',function(){c('barking',1);sfx.bark();talk('Woof!',900);setTimeout(function(){c('barking',0);},340);});
   return{runBy:runBy,jump:jump};
 })();
 var hum=document.getElementById('human'),dogSeen=false;
