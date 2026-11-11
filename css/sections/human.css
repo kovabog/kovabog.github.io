@@ -1,0 +1,10 @@
+/* "Human" section: hobby tiles. Top margin leaves room for the sitting dog (see components/dog.css). */
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:76px}
+.tile{padding:18px 18px 20px;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.tile:hover{transform:translateY(-5px) rotate(-1deg)}
+.tile svg{width:34px;height:34px;stroke:var(--teal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:14px}
+.tile h3{font-size:20px;margin-bottom:4px}
+.tile p{font-size:14.5px;color:var(--ink-soft);line-height:1.35}
+@media (max-width:900px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+}

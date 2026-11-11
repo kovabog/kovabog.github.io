@@ -1,0 +1,5 @@
+/* Transient notification. */
+.toast{position:fixed;z-index:12;top:72px;left:50%;transform:translate(-50%,-14px);opacity:0;pointer-events:none;padding:10px 18px;border-radius:999px;background:var(--ink);color:#f4fbfa;font:500 14px var(--body);white-space:nowrap;
+  box-shadow:0 14px 30px -14px rgba(20,48,47,.6);transition:opacity .3s,transform .45s cubic-bezier(.3,1.5,.5,1)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast b{color:#8fe0d8;font-weight:600}

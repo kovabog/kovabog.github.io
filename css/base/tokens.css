@@ -1,0 +1,18 @@
+/* Design tokens: colors, fonts, spacing. No selectors other than :root. */
+/* Layout idea: a lab-label page. Glass cards float over a rippling pale surface while one diamond,
+   ringed by the stack's icons, travels the page and spins with the scroll. Sides alternate so text never hides it. */
+:root{
+  --paper:#eef2f3;
+  --ink:#14302f;
+  --ink-soft:#4b6362;
+  --teal:#1d6d68;
+  --teal-soft:#8fc9c4;
+  --warm:#e59a5a;
+  --line:rgba(20,48,47,.14);
+  --glass:rgba(255,255,255,.58);
+  --display:"Bricolage Grotesque","Geist",system-ui,sans-serif;
+  --body:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --gut:clamp(18px,4vw,56px);
+  color-scheme:light;
+}

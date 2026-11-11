@@ -1,0 +1,13 @@
+/* Reset and page-level defaults. */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(1200px 700px at 78% 12%,#ffffff 0%,transparent 60%),
+  radial-gradient(900px 700px at 8% 70%,#dfe8ea 0%,transparent 65%),var(--paper)}
+main{position:relative;z-index:1}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+@media (max-width:560px){
+  body{font-size:16px}
+}

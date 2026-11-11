@@ -1,0 +1,26 @@
+/* Entry point: starts each feature. Every feature lives in its own module and only talks to the others through core/events.js. */
+import { initReveal } from './features/reveal.js';
+import { initCounters } from './features/counters.js';
+import { initDonut } from './features/donut.js';
+import { initNav } from './features/nav.js';
+import { initContact } from './features/contact.js';
+import { initSoundUi } from './features/sound-ui.js';
+import { initDogTriggers } from './features/dog-triggers.js';
+import { initEasterEggs } from './features/easter-eggs.js';
+import { initKonami } from './features/konami.js';
+import { initOrbitLinks } from './features/orbit-links.js';
+import { initTddDemo } from './features/tdd-demo.js';
+import { initStage } from './stage/index.js';
+
+initCounters();
+initDonut();
+initReveal();
+initNav();
+initContact();
+initSoundUi();
+initDogTriggers();
+initEasterEggs();
+initKonami();
+initOrbitLinks();
+initTddDemo();
+initStage();

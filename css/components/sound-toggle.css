@@ -1,0 +1,5 @@
+/* Mute button in the navigation. */
+.snd{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.6);display:grid;place-items:center;cursor:pointer;color:var(--ink);padding:0;flex:none}
+.snd:hover{background:#fff}
+.snd svg{width:17px;height:17px}
+.snd .off{display:none}.snd[aria-pressed="true"] .on{display:none}.snd[aria-pressed="true"] .off{display:block}

@@ -1,0 +1,18 @@
+/* The dog: running sprite, speech bubble and the dog sitting on the "Dog owner" tile. */
+.dogtile{cursor:pointer}
+.dog{position:fixed;left:0;bottom:4px;z-index:9;width:200px;visibility:hidden;pointer-events:none;will-change:transform}
+.dog-in{position:relative;transform-origin:50% 100%}
+.dog-img{display:block;width:100%;aspect-ratio:571/427;background:url(../../img/dog-run.png) 0 0/400% 100% no-repeat;pointer-events:auto;cursor:pointer;image-rendering:pixelated;filter:drop-shadow(0 8px 8px rgba(20,48,47,.2));transform-origin:50% 100%;user-select:none;-webkit-user-drag:none}
+.dog-say{position:absolute;bottom:92%;left:58%;white-space:nowrap;padding:9px 14px;border-radius:16px 16px 16px 4px;background:#fff;color:var(--ink);font:600 15px/1.2 var(--display);letter-spacing:-.01em;
+  box-shadow:0 12px 24px -12px rgba(20,48,47,.5);border:1px solid var(--line);opacity:0;transform:translateY(8px) scale(.85);transform-origin:0 100%;transition:opacity .2s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.dog.talk .dog-say{opacity:1;transform:none}
+.dog.running .dog-img{animation:runcycle .5s steps(4) infinite}
+@keyframes runcycle{to{background-position:133.3333% 0}}
+.dog.barking .dog-img{animation:bark .32s ease-in-out infinite}
+@keyframes bark{0%,100%{transform:none}40%{transform:scale(1.06,.95) rotate(-3deg)}}
+.dog.air .dog-img{transform:rotate(-6deg)}
+/* the dog sitting on the "Dog owner" tile */
+.dogtile{position:relative}
+.dog-sit{position:absolute;right:14px;bottom:100%;width:56px;height:auto;margin-bottom:-26px;image-rendering:pixelated;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(20,48,47,.18));transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.dogtile:hover .dog-sit{transform:translateY(-4px) rotate(3deg)}
+@media (max-width:560px){.dog{width:140px}.dog-say{font-size:13.5px;left:50%;translate:-62% 0;white-space:normal;width:max-content;max-width:min(230px,78vw);border-radius:16px}}

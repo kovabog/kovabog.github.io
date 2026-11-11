@@ -1,0 +1,16 @@
+/* Hero section. */
+.hero{min-height:88svh;padding-top:120px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.iconrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:38px}
+.iconrow span{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 14px 24px -14px rgba(20,48,47,.4);animation:bob 4.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+.iconrow .ic{width:28px;height:28px}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hint{margin-top:34px;display:flex;align-items:center;gap:12px}
+.hint i{display:block;width:1px;height:30px;background:linear-gradient(var(--ink-soft),transparent)}
+@media (max-width:900px){
+  .hero{min-height:0}
+}
+@media (max-width:560px){
+  .hint{display:none}
+}

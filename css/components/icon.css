@@ -1,0 +1,5 @@
+/* Inline SVG icon sizing and the hover state of icons linked to the 3D orbit. */
+.ic{width:24px;height:24px;display:block;flex:none}
+.li{width:18px;height:18px;display:block;flex:none;color:currentColor}
+.orb .ic{transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.orb:hover .ic{transform:scale(1.18) rotate(-6deg)}

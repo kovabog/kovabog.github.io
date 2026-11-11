@@ -1,0 +1,24 @@
+/* Live TDD terminal card. */
+.card.term-card{padding:0;overflow:hidden;background:#12292a;border-color:rgba(255,255,255,.12);box-shadow:0 30px 60px -30px rgba(20,48,47,.55)}
+.term-head{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.dots3{display:flex;gap:6px}.dots3 i{width:10px;height:10px;border-radius:50%;background:#ff6b5e}.dots3 i:nth-child(2){background:#ffbd4a}.dots3 i:nth-child(3){background:#35c46a}
+.term-head .mono{color:#8fb3b0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.term-head .btn{background:#8fe0d8;color:#12292a;border-color:#8fe0d8}
+.term-head .btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.term{font:13px/1.7 var(--mono);color:#cfe3e1;padding:14px 16px 6px}
+.cmd{color:#8fe0d8}.cmd b{color:#fff;font-weight:500}
+.tl{display:flex;gap:10px;align-items:center;white-space:nowrap;overflow:hidden;transition:color .25s}
+.tl span:last-child{overflow:hidden;text-overflow:ellipsis}
+.tl .st{width:14px;text-align:center;flex:none;font-weight:600}
+.tl.pend{color:#6f8f8c}.tl.fail{color:#ff8f84}.tl.pass{color:#7fe3a6}
+.tl.run .st{display:inline-block;animation:tspin .5s linear infinite}
+@keyframes tspin{to{transform:rotate(360deg)}}
+.agent{color:#f3c189;margin-top:8px}
+.code{margin:6px 0 10px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.05);color:#e6f1f0;white-space:pre;overflow:auto hidden;font-size:12px;line-height:1.55;height:calc(7 * 1.55em + 18px)}
+.code .k{color:#8fe0d8}.code .t{color:#f3c189}.code .dim,.dim{color:#5f7f7c}
+.caret{display:inline-block;width:7px;height:13px;background:#8fe0d8;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term-bar{height:3px;background:rgba(255,255,255,.08)}
+.term-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#35c46a,#7fe3a6);transition:width .3s}
+.term-foot{padding:10px 16px 13px;color:#8fb3b0;text-transform:none;letter-spacing:.01em}
+.term-foot .ok{color:#7fe3a6}.term-foot .bad{color:#ff8f84}

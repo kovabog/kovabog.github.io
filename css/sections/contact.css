@@ -1,0 +1,8 @@
+/* "Contact" section. */
+.contact h2{font-size:clamp(40px,5.6vw,82px);letter-spacing:-.045em}
+.links{display:grid;gap:14px;margin-top:30px}
+.linkrow{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.linkrow .addr{font-family:var(--display);font-weight:500;letter-spacing:-.03em;font-size:clamp(22px,2.5vw,32px);text-decoration:none;border-bottom:1px solid var(--teal-soft)}
+.chip{font-family:var(--mono);font-size:11.5px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.55);color:var(--ink-soft)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.status{min-height:20px;color:var(--teal)}

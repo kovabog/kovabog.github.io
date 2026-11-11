@@ -1,0 +1,12 @@
+/* Page skeleton: sections, containers, panels, footer. */
+.sec{position:relative;padding:clamp(70px,12vh,140px) var(--gut);min-height:80svh;display:flex;align-items:center}
+.wrap{width:100%;max-width:1240px;margin:0 auto}
+.panel{max-width:600px}
+.side-left .panel{margin-right:auto}
+.side-right .panel{margin-left:auto}
+.panel.wide{max-width:680px}
+footer{position:relative;z-index:1;padding:28px var(--gut) 40px;text-align:right}
+@media (max-width:900px){
+  .sec{min-height:0}
+  .panel,.panel.wide{max-width:none}
+}

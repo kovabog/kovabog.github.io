@@ -1,0 +1,7 @@
+/* Scroll-reveal states and reduced-motion handling. */
+.reveal{transition:opacity .9s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.js .reveal:not(.in){opacity:.35;transform:translateY(26px)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}

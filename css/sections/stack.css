@@ -1,0 +1,30 @@
+/* "Stack" section: composition donut, legend and toolbox. */
+.stackcol{display:grid;gap:16px;margin-top:30px}
+.comp{display:grid;grid-template-columns:minmax(200px,250px) 1fr;gap:clamp(18px,3vw,34px);align-items:center}
+.donut{position:relative;width:100%;max-width:250px;aspect-ratio:1;margin:0 auto}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.donut circle{fill:none;stroke-width:22;transition:stroke-dasharray 1.4s cubic-bezier(.2,.8,.2,1) var(--d,0s),stroke-width .25s,opacity .25s;cursor:pointer}
+.donut .track{stroke:rgba(20,48,47,.07);transition:none;cursor:default}
+.donut.hl circle.sl{opacity:.32}
+.donut.hl circle.sl.on{opacity:1;stroke-width:28}
+.donut .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;gap:2px}
+.donut .mid b{font:600 clamp(34px,4vw,46px)/1 var(--display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.donut .mid span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);max-width:11ch;margin:0 auto}
+.legend{display:grid;gap:4px}
+.lg{display:grid;grid-template-columns:10px 26px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:12px;transition:background .2s;cursor:default}
+.lg:hover,.lg.on{background:rgba(255,255,255,.75)}
+.lg .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.lg .nm{font-size:15.5px;line-height:1.2}
+.lg .v{font:500 15px var(--display);font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.toolbox{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.tool{display:grid;justify-items:center;gap:8px;padding:14px 4px 12px;border-radius:16px;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.85);
+  font-size:12.5px;color:var(--ink-soft);text-align:center;line-height:1.2;transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .3s}
+.tool:hover{transform:translateY(-5px) rotate(-2deg);box-shadow:0 16px 24px -14px rgba(20,48,47,.45)}
+.tool .ic{width:34px;height:34px}
+.foot{margin-top:2px;text-transform:none;letter-spacing:.02em}
+@media (max-width:560px){
+  .comp{grid-template-columns:1fr}
+  .toolbox{grid-template-columns:repeat(5,1fr);gap:6px}
+  .tool{font-size:10.5px;padding:10px 2px}
+  .tool .ic{width:28px;height:28px}
+}

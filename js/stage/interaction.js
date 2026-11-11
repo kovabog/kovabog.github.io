@@ -1,0 +1,84 @@
+/* Pointer interaction with the 3D scene: drag/flick the diamond, double-tap it, pop bubbles. */
+import { root } from '../core/env.js';
+import { emit } from '../core/events.js';
+import { sfx } from '../audio/sfx.js';
+
+export function createInteraction(THREE, scene3d) {
+  var cam = scene3d.cam, crystal = scene3d.crystal, dragG = scene3d.dragG, drops = scene3d.drops, view = scene3d.view, popDrop = scene3d.popDrop;
+
+  var dragQ = new THREE.Quaternion(), IDQ = new THREE.Quaternion(), _qa = new THREE.Quaternion(), _ax = new THREE.Vector3(), _v = new THREE.Vector3();
+  var dragging = false, dvx = 0, dvy = 0, lpx = 0, lpy = 0, lpt = 0, idle = 9, lastTap = 0;
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+
+  function turn(dx, dy) {
+    _qa.setFromAxisAngle(_ax.set(0, 1, 0), dx); dragQ.premultiply(_qa);
+    _qa.setFromAxisAngle(_ax.set(1, 0, 0), dy); dragQ.premultiply(_qa);
+    dragQ.normalize();
+  }
+
+  /* Page UI that should keep its normal pointer behaviour. */
+  function isUI(t) { return t && t.closest && t.closest('a,button,input,textarea,select,label,nav,.card,.lg,.tool,.iconrow,.links,.facts'); }
+
+  /* Nearest thing under the pointer: the gem or a live droplet. */
+  function pick(cx, cy) {
+    ndc.set(cx / view.W * 2 - 1, 1 - cy / view.H * 2); ray.setFromCamera(ndc, cam);
+    var R0 = ray.ray, best = null, bt = 1e9, t;
+    crystal.getWorldPosition(_v); var cr = 1.4 * crystal.scale.x;
+    if (R0.distanceToPoint(_v) < cr) { t = _v.sub(R0.origin).dot(R0.direction) - cr * .6; best = { k: 'gem' }; bt = t; }
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i];
+      if (!d.m.visible || (d.state && d.state !== 'live')) continue;
+      if (R0.distanceToPoint(d.m.position) < d.r * 1.2 + .06) {
+        t = _v.copy(d.m.position).sub(R0.origin).dot(R0.direction) - d.r;
+        if (t < bt) { bt = t; best = { k: 'drop', d: d }; }
+      }
+    }
+    return best;
+  }
+
+  window.addEventListener('pointermove', function (e) {
+    if (dragging) {
+      var now = performance.now(), dtt = Math.max(8, now - lpt) / 1000, dx = (e.clientX - lpx) * .0085, dy = (e.clientY - lpy) * .0085;
+      turn(dx, dy); dvx = dx / dtt; dvy = dy / dtt; lpx = e.clientX; lpy = e.clientY; lpt = now; idle = 0; return;
+    }
+    if (e.pointerType !== 'mouse') return;
+    var h = isUI(e.target) ? null : pick(e.clientX, e.clientY);
+    root.style.cursor = h ? (h.k === 'gem' ? 'grab' : 'pointer') : '';
+  }, { passive: true });
+
+  window.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || isUI(e.target)) return;
+    var h = pick(e.clientX, e.clientY); if (!h) return;
+    if (h.k === 'drop') { popDrop(h.d); return; }
+    if (e.pointerType === 'touch') {
+      var nowT = performance.now();
+      if (nowT - lastTap < 380) { emit('egg:found', 'gem'); lastTap = 0; } else lastTap = nowT;
+      dvx += 7 * (e.clientX < view.W / 2 ? -1 : 1); idle = 0; return;
+    }
+    e.preventDefault(); sfx.click(); dragging = true; dvx = dvy = 0; lpx = e.clientX; lpy = e.clientY; lpt = performance.now(); idle = 0; root.classList.add('dragging');
+  });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false; root.classList.remove('dragging'); root.style.cursor = 'grab';
+    if (performance.now() - lpt > 90) { dvx = dvy = 0; }
+  }
+
+  window.addEventListener('dblclick', function (e) {
+    if (isUI(e.target)) return;
+    var h = pick(e.clientX, e.clientY);
+    if (h && h.k === 'gem') emit('egg:found', 'gem');
+  });
+  window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag); window.addEventListener('blur', endDrag);
+
+  return {
+    /* Applies drag inertia, eases back to rest when idle, and writes the rotation to the drag group. */
+    update: function (dt) {
+      if (!dragging) {
+        if (Math.abs(dvx) + Math.abs(dvy) > .002) { turn(dvx * dt, dvy * dt); var dmp = Math.exp(-dt * 2.6); dvx *= dmp; dvy *= dmp; }
+        idle += dt; if (idle > 2.5) dragQ.slerp(IDQ, 1 - Math.exp(-dt * .7));
+      }
+      dragG.quaternion.copy(dragQ);
+    }
+  };
+}

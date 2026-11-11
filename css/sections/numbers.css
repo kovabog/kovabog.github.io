@@ -1,0 +1,22 @@
+/* "Numbers" section. */
+.numgrid{display:grid;grid-template-columns:1fr minmax(260px,1fr) 1fr;gap:40px}
+.numcol{display:grid;gap:56px;align-content:center}
+.numcol.r{align-content:end}
+.numhead{max-width:420px}
+.stat{border-top:1px solid var(--ink);padding-top:14px;max-width:340px}
+.numcol.r .stat{margin-left:auto}
+.stat .n{font-family:var(--display);font-weight:300;font-size:clamp(72px,10vw,150px);line-height:.9;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.stat p{color:var(--ink-soft);font-size:15.5px;margin-top:10px}
+.stat .mono{display:block;margin-bottom:8px}
+.js .stat:not(.in){opacity:.4;transform:translateY(24px)}
+.stat{transition:opacity .9s,transform .9s}
+@media (max-width:900px){
+  .numgrid{grid-template-columns:1fr 1fr;gap:34px 24px}
+  .numgrid .spacer{display:none}
+  .numcol{display:contents}
+  .numhead{grid-column:1/-1}
+  .numcol.r .stat{margin-left:0}
+}
+@media (max-width:560px){
+  .numgrid{grid-template-columns:1fr}
+}
