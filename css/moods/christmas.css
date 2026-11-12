@@ -1,0 +1,12 @@
+/* Christmas mood (Dec 24-26, see js/features/mood-christmas.js): snow canvas, lights on the nav, festive greeting. */
+canvas.snow{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.garland{position:absolute;left:22px;right:22px;bottom:-9px;height:12px;display:flex;justify-content:space-between;pointer-events:none;
+  background:radial-gradient(ellipse 50% 6px at 50% 0,transparent 98%,rgba(20,48,47,.4) 100%) 0 0/calc(100% / 8) 8px repeat-x}
+.garland i{width:7px;height:10px;border-radius:50% 50% 45% 45%;margin-top:3px;background:#e5484d;box-shadow:0 0 8px 1px currentColor;color:#e5484d;
+  animation:bulb 1.6s ease-in-out infinite}
+.garland i:nth-child(4n+2){background:#f3c189;color:#f3c189;animation-delay:.4s}
+.garland i:nth-child(4n+3){background:#35c46a;color:#35c46a;animation-delay:.8s}
+.garland i:nth-child(4n+4){background:#63c0b8;color:#63c0b8;animation-delay:1.2s}
+@keyframes bulb{0%,100%{opacity:1}50%{opacity:.35;box-shadow:none}}
+.hero-note.xmas{color:#c2373c;border-color:rgba(229,72,77,.35)}
+.night .hero-note.xmas{color:#ff8f84}

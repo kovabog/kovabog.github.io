@@ -1,11 +1,13 @@
-/* Full-screen backdrop: a pale surface with slow caustic ripples that drifts with the scroll. */
+/* Full-screen backdrop: a pale surface with slow caustic ripples that drifts with the scroll.
+   With html.night (night mood, features/mood-night.js) the same ripples are drawn in a deep teal night palette. */
+import { root } from '../core/env.js';
 
 export function createBackground(THREE, scene) {
   var bgMat=new THREE.ShaderMaterial({
-    uniforms:{uTime:{value:0},uScroll:{value:0},uRes:{value:new THREE.Vector2(1,1)}},
+    uniforms:{uTime:{value:0},uScroll:{value:0},uRes:{value:new THREE.Vector2(1,1)},uNight:{value:root.classList.contains('night')?1:0}},
     vertexShader:'void main(){gl_Position=vec4(position.xy,.9999,1.);}',
     fragmentShader:[
-    'uniform float uTime;uniform float uScroll;uniform vec2 uRes;',
+    'uniform float uTime;uniform float uScroll;uniform vec2 uRes;uniform float uNight;',
     'void main(){',
     ' vec2 uv=gl_FragCoord.xy/uRes.y; uv.y-=uScroll*.00032;',
     ' vec2 p=uv*2.3; float t=uTime*.07;',
@@ -20,6 +22,7 @@ export function createBackground(THREE, scene) {
     ' col+=r1*.2+r2*.14;',
     ' col-=.04*pow(1.-abs(sin(p.x*2.2+p.y*1.1+.38)),6.)*tone;',
     ' col=clamp(col,0.,1.);',
+    ' col=mix(col,col*vec3(.12,.17,.19)+vec3(.01,.02,.025),uNight);',
     ' gl_FragColor=vec4(pow(col,vec3(2.2)),1.);',
     ' #include <colorspace_fragment>',
     '}'].join('\n'),

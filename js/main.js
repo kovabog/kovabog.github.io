@@ -15,8 +15,14 @@ import { initGoodBoy } from './features/good-boy.js';
 import { initDevMode } from './features/dev-mode.js';
 import { initSpeedometer } from './features/speedometer.js';
 import { initConfetti } from './features/confetti.js';
+import { initMoodNight } from './features/mood-night.js';
+import { initMoodMorning } from './features/mood-morning.js';
+import { initMoodChristmas } from './features/mood-christmas.js';
 import { initStage } from './stage/index.js';
 
+initMoodNight();
+initMoodMorning();
+initMoodChristmas();
 initCounters();
 initDonut();
 initReveal();

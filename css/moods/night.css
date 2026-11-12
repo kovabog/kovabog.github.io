@@ -1,0 +1,54 @@
+/* Night mood (22:00-06:00, see js/features/mood-night.js): dark palette for html.night, moon and twinkling stars.
+   Only overrides; colors that are hard-coded for the light page are remapped here. */
+html.night{
+  --paper:#0e1b1d;
+  --ink:#e3efed;
+  --ink-soft:#9ab3b0;
+  --teal:#63c0b8;
+  --teal-soft:#2c6a65;
+  --line:rgba(227,239,237,.14);
+  --glass:rgba(18,36,38,.62);
+  color-scheme:dark;
+}
+.night body::before{background:radial-gradient(1200px 700px at 78% 12%,#173033 0%,transparent 60%),radial-gradient(900px 700px at 8% 70%,#122426 0%,transparent 65%),var(--paper)}
+.night.no-gl body::before{background:radial-gradient(900px 600px at 80% 10%,#173033 0%,transparent 60%),var(--paper)}
+.night nav{background:rgba(14,27,29,.72);border-color:rgba(255,255,255,.08);box-shadow:0 10px 30px -14px rgba(0,0,0,.7)}
+.night nav a.l:hover{background:rgba(255,255,255,.07)}
+.night .card{border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 60px -30px rgba(0,0,0,.7)}
+.night .btn{color:#0e1b1d}
+.night .btn.ghost{background:rgba(255,255,255,.06);color:var(--ink)}
+.night .snd{background:rgba(255,255,255,.06)}
+.night .snd:hover{background:rgba(255,255,255,.14)}
+.night .toast{color:#0e1b1d}
+.night .toast b{color:#1d6d68}
+.night .tool,.night .iconrow span,.night .techrow span{background:rgba(236,244,243,.9);border-color:rgba(255,255,255,.2);color:#4b6362}
+.night .badge{background:rgba(255,255,255,.06)}
+.night .badge.hot{background:var(--ink);border-color:var(--ink);color:#0e1b1d}
+.night .badge.hot .li{color:#1d6d68}
+.night .job::before{background:var(--paper)}
+.night .dots i.o{background:rgba(255,255,255,.14)}
+.night .steps li{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08)}
+.night .steps i{color:#0e1b1d}
+.night .node i{background:#16292b}
+.night .node.end i{color:#1d6d68}
+.night .lg:hover,.night .lg.on{background:rgba(255,255,255,.08)}
+.night .donut .track{stroke:rgba(255,255,255,.08)}
+.night .donut circle.sl[stroke="#14302f"]{stroke:#e3efed}
+.night .lg[data-c="#14302f"] .dot{background:#e3efed}
+.night .chip{background:rgba(255,255,255,.06)}
+.night .dog-say{color:#14302f}
+.night .goodboy{background:rgba(14,27,29,.85)}
+.night .devfps{background:#061110}
+@media (max-width:900px){
+  .night .card{background:rgba(18,36,38,.84)}
+}
+/* moon and stars in the hero */
+.night-sky{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.night-sky .moon{position:absolute;top:84px;right:var(--gut);width:42px;height:42px;filter:drop-shadow(0 0 14px rgba(253,243,216,.45))}
+.night-sky .moon svg{display:block;width:100%;height:100%}
+.night-sky .star{position:absolute;width:var(--s);height:var(--s);border-radius:50%;background:#f4fbfa;box-shadow:0 0 6px rgba(244,251,250,.8);
+  animation:twinkle 3.2s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+@media (max-width:560px){
+  .night-sky .moon{top:76px;width:32px;height:32px}
+}
