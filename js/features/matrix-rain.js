@@ -1,18 +1,28 @@
-/* Easter egg "matrix". Trigger: triple-click (or triple-tap) any ".NET" / "C#" word marked [data-matrix].
+/* Easter egg "matrix". Trigger: triple-click (or triple-tap) any ".NET" / "C#" word marked [data-matrix] or any C# / .NET icon.
    Effect: ~5 s of falling green glyphs on a full-screen canvas plus a caption, then a fade-out and full cleanup.
    Reduced motion: no rain, only the caption. */
 import { emit } from '../core/events.js';
 import { reduce } from '../core/env.js';
 
+var CODE_ICON = /#i-(csharp|dotnet)$/;
 var DURATION = 5000, FADE = 800, CLICK_GAP = 450;
 var GLYPHS = ('ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789').split('').concat(['{', '}', ';', '=>', '<>']);
+
+/* A [data-matrix] word, or a C# / .NET icon in any icon row, legend or tool list. */
+function target(e) {
+  var t = e.target.closest ? e.target : null;
+  if (!t) return null;
+  var word = t.closest('[data-matrix]');
+  if (word) return word;
+  var box = t.closest('.lg,.tool,.iconrow>span,.techrow>span'), use = box && box.querySelector('use');
+  return use && CODE_ICON.test(use.getAttribute('href') || '') ? box : null;
+}
 
 export function initMatrixRain() {
   var clicks = 0, lastClick = 0, running = false;
 
   document.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('[data-matrix]');
-    if (!t) return;
+    if (!target(e)) return;
     var now = performance.now();
     clicks = now - lastClick < CLICK_GAP ? clicks + 1 : 1;
     lastClick = now;
@@ -20,7 +30,7 @@ export function initMatrixRain() {
   });
   // A triple-click would also select the whole paragraph; keep the selection out of the joke.
   document.addEventListener('mousedown', function (e) {
-    if (e.detail > 1 && e.target.closest && e.target.closest('[data-matrix]')) e.preventDefault();
+    if (e.detail > 1 && target(e)) e.preventDefault();
   });
 
   function play() {

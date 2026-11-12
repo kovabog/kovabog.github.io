@@ -1,0 +1,4 @@
+/* Hint button in the navigation (see js/features/egg-hint.js): same round shape as the mute button. */
+.hint-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.6);display:grid;place-items:center;cursor:pointer;color:var(--ink);padding:0;flex:none}
+.hint-btn:hover{background:#fff}
+.hint-btn svg{width:17px;height:17px}

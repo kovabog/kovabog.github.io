@@ -1,7 +1,7 @@
 /* Live TDD demo card: tests fail, an "agent" types the code, tests go green. Starts when the card is half visible.
-   Easter egg "machine": about 1 in 4 runs started with the button end with one test failing as
+   Easter egg "machine": the first run started with the button ("Run again") ends with one test failing as
    "Expected: pass, Actual: pass (It works on my machine)" plus a "Works on my machine" stamp.
-   The automatic first run always passes, so a first-time visitor sees the real story. */
+   The automatic first run and every later run pass, so a visitor sees the real story first. */
 import { emit } from '../core/events.js';
 import { sfx } from '../audio/sfx.js';
 import { wait } from '../core/util.js';
@@ -11,14 +11,15 @@ export function initTddDemo() {
   var term=document.getElementById('term');if(!term)return;
   var btn=document.getElementById('runTests'),foot=document.getElementById('termFoot'),bar=document.getElementById('termBar');
   var cmd=term.querySelector('.cmd'),agent=term.querySelector('.agent'),code=term.querySelector('.code');
-  var rows=[].slice.call(term.querySelectorAll('.tl')),busy=false,card=document.getElementById('tdd'),stamp=null,JINX_CHANCE=.25;
+  var rows=[].slice.call(term.querySelectorAll('.tl')),busy=false,card=document.getElementById('tdd'),stamp=null,userRuns=0;
   var GLYPH={pend:'\u00b7',run:'\u25cc',fail:'\u2717',pass:'\u2713'};
   function st(r,s){r.className='tl '+s;r.querySelector('.st').textContent=GLYPH[s];}
   function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function hl(t){return esc(t).replace(/\b(public|async|await|return|throw|new|var|if)\b/g,'<span class="k">$1</span>').replace(/\b(Task|Order|Cart|EmptyCartException)\b/g,'<span class="t">$1</span>');}
   async function run(byUser){
     if(busy)return;busy=true;btn.disabled=true;
-    var jinx=byUser===true&&Math.random()<JINX_CHANCE,bad=jinx?1+(Math.random()*(rows.length-1)|0):-1;
+    if(byUser===true)userRuns++;
+    var jinx=byUser===true&&userRuns===1,bad=jinx?1+(Math.random()*(rows.length-1)|0):-1;
     if(stamp){stamp.remove();stamp=null;}
     rows.forEach(function(r){st(r,'pend');});bar.style.width='0';
     code.innerHTML='<span class="dim">// No code yet. Tests first.</span>';agent.textContent='agent \u203a waiting for failing tests';

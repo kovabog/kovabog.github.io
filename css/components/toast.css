@@ -2,4 +2,8 @@
 .toast{position:fixed;z-index:12;top:72px;left:50%;transform:translate(-50%,-14px);opacity:0;pointer-events:none;padding:10px 18px;border-radius:999px;background:var(--ink);color:#f4fbfa;font:500 14px var(--body);white-space:nowrap;
   box-shadow:0 14px 30px -14px rgba(20,48,47,.6);transition:opacity .3s,transform .45s cubic-bezier(.3,1.5,.5,1)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.ask.show{pointer-events:auto}
+.toast button{margin-left:8px;padding:4px 12px;border:1px solid rgba(244,251,250,.4);border-radius:999px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.toast button[data-act="reset"]{background:#8fe0d8;border-color:#8fe0d8;color:var(--ink)}
 .toast b{color:#8fe0d8;font-weight:600}
+@media (max-width:560px){.toast{white-space:normal;text-align:center;width:max-content;max-width:calc(100vw - 32px);border-radius:18px}}

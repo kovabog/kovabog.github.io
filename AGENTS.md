@@ -43,8 +43,8 @@ css/                  loaded in this order by <link> tags in index.html
   base/               tokens.css (colors, fonts – the only place for :root vars), reset, typography,
                       motion (.reveal states + reduced-motion)
   layout/             page.css (sections, wraps, panels, footer), nav.css
-  components/         button, card, icon, sound-toggle, toast, tooltip ([data-tip]), terminal (TDD demo), dog,
-                      matrix, dev-mode, confetti, rubber-band (easter-egg overlays)
+  components/         button, card, icon, sound-toggle, hint-button, toast, tooltip ([data-tip]), terminal (TDD demo), dog,
+                      matrix, dev-mode, confetti, foam-party, rubber-band (easter-egg overlays)
   sections/           one file per section: hero, stack, path, numbers, craft, human, contact
   stage/stage.css     WebGL canvas layer, HUD, no-gl fallback, drag cursor
   moods/              night.css (html.night palette overrides), christmas.css (html.xmas); loaded last
@@ -58,16 +58,17 @@ js/
     store.js          load(key, fallback) / save(key, value): localStorage wrapped in try/catch
     clock.js          now() local date/time with ?time=HH:MM and ?date=YYYY-MM-DD test overrides
   data/               static data only: cv-pdf.js (base64 PDF), orbit-icons.js (badge SVGs + order),
-                      tdd-source.js (C# typed by the demo), eggs.js (every egg id + dog line; total = its size),
+                      tdd-source.js (C# typed by the demo), eggs.js (every egg id + dog line + hint; total = its size),
                       moods.js (on/off flags and hours for the time-based moods)
   audio/sfx.js        Web Audio sounds + vibration; mute flag in localStorage
   ui/toast.js         toast(html)
   ui/hero-note.js     heroNote(text, opts): absolutely positioned note above the hero eyebrow
+  ui/disco-ball.js    createDiscoBall(canvas): three.js mirror ball on its own canvas, used by features/foam-party
   features/           one page behaviour per file, each exports initX():
                       reveal, counters, donut, nav, contact, sound-ui, dog (sprite controller:
                       dog.runBy(msg), dog.jump(msg)), dog-triggers (when the dog appears),
-                      easter-eggs (counting, persistence, footer counter, reactions), konami, orbit-links,
-                      tdd-demo, matrix-rain, good-boy, dev-mode, speedometer, confetti, rubber-band,
+                      easter-eggs (counting, persistence, footer counter, reactions), egg-hint (nav hint button), orbit-links,
+                      tdd-demo, matrix-rain, good-boy, dev-mode, speedometer, confetti, foam-party, rubber-band,
                       mood-night, mood-morning, mood-christmas
   stage/              the three.js scene; index.js assembles parts and runs the frame loop
                       context (renderer/scene/camera), layout (viewport + scroll→pose from data-c*/data-m*),
@@ -75,7 +76,8 @@ js/
                       diamond + gem-geometry + gem-material (ray-traced refraction), badge-textures +
                       orbit-ring, intro + intro-flash + intro-shards, highlight, droplets, particles,
                       textures, interaction (drag/flick/pick/pop/bubble drag), hud,
-                      overdrive (spin-fast egg), bubble-pile (drag-and-drop physics)
+                      gem-burst (double-click: gem swells, badges fly out and return after 2 s),
+                      overdrive (spin-fast egg), bubble-pile (drag-and-drop physics, bubbles bounce off the diamond), bubble-rain (3 s bubble rain after the "pile" egg)
 ```
 
 ### Page sections (index.html, in order)
@@ -95,11 +97,18 @@ where the diamond sits while that section is on screen, in fractions of half the
 | `reveal`          | element    | features/reveal                                     | counters, donut          |
 | `orbit:highlight` | key / null | features/orbit-links                                | stage/highlight          |
 | `egg:found`       | id         | any egg trigger (see data/eggs.js)                  | features/easter-eggs     |
-| `bubbles:popAll`  | –          | features/easter-eggs                                | stage/droplets           |
+| `egg:reset`       | –          | features/egg-hint (reset offered once all eggs found) | features/easter-eggs, egg-hint |
+| `stage:nogl`      | –          | stage/index (no WebGL / three.js failed to load)    | features/easter-eggs     |
 | `confetti:burst`  | { x, y }   | stage/overdrive                                     | features/confetti        |
+| `party:foam`      | –          | stage/droplets (every 10th popped bubble)           | features/foam-party      |
 
 Easter eggs are listed, with their triggers, in `js/data/eggs.js`; the footer total is the size of that list.
-A new egg: add its id + dog line there and `emit('egg:found', id)` from the trigger. Found ids persist in
+WebGL is **not** required for the page, but 4 of the 11 eggs live in the 3D scene (`gem`, `bubbles`, `pile`, `overdrive`;
+the `GL_EGGS` list in `eggs.js`). Without WebGL (`html.no-gl`, announced by the `stage:nogl` event) the footer counter, the
+"n/total" toast and the hint button use only the other 7, so the total stays reachable. A new egg that needs the 3D scene
+must be added to `GL_EGGS`.
+The dog (jump + bark) reacts only to the eggs in `DOG_REACT`; the others get just the toast and chime. The hint button
+makes the dog jump in silently and say the hint. A new egg: add its id + dog line + a hint (HINTS) there and `emit('egg:found', id)` from the trigger. Found ids persist in
 localStorage (`bk-eggs`). Time-based moods are not eggs; test them with `?time=23:30` / `?date=2026-12-25`.
 
 ## Conventions
@@ -125,9 +134,10 @@ localStorage (`bk-eggs`). Time-based moods are not eggs; test them with `?time=2
 1. `python3 -m http.server` in the repo root, open the page, watch the console: no errors, no 404s.
 2. Check desktop (~1280px) and mobile (~390px); scroll through every section.
 3. Check the interactive bits you touched: nav scroll, donut hover, counters, TDD demo, bubbles,
-   Konami code, dog run-by in `#human` and the jump on the "Dog owner" tile, sound toggle, copy email,
+   dog run-by in `#human` and the jump on the "Dog owner" tile, sound toggle, copy email,
    and any easter egg you touched (triggers in `js/data/eggs.js`); moods via `?time=` / `?date=`.
-4. Emulate reduced motion and, for stage changes, a browser without WebGL (no-gl fallback).
+4. Emulate reduced motion and, for stage changes, a browser without WebGL (no-gl fallback): the footer should then say
+   "7 easter eggs inside" and the hint button must not point at the diamond or the bubbles.
 
 ## Git
 

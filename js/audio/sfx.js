@@ -37,6 +37,8 @@ export var sfx = (function () {
     fail:function(){play(function(c){tone(c,240,190,.09,'square',.012);},false);},
     pass:function(i){play(function(c){var f=660*Math.pow(1.1225,i);tone(c,f,f*1.01,.1,'sine',.045);},false);},
     chime:function(){play(function(c){[784,988,1319].forEach(function(f,i){tone(c,f,f,.3,'sine',.05,i*.09);});});buzz([10,40,10]);},
+    disco:function(sec){play(function(c){for(var b=0;b<sec*2.2;b++){var t=b/2.2;tone(c,150,42,.2,'sine',.22,t);tone(c,7400,6800,.03,'square',.006,t+.227);
+      if(b%2)tone(c,220,110,.08,'triangle',.05,t);if(b%4===0)[523,659,784].forEach(function(f,i){tone(c,f,f,.16,'sine',.025,t+i*.06);});}});buzz([20,60,20,60,20]);},
     bark:function(){play(function(c){barkOne(c,0);},false);buzz(25);}
   };
 })();

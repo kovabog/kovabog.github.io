@@ -9,9 +9,9 @@
 import { emit } from '../core/events.js';
 
 var GRAVITY = 15, BOUNCE = .28, AIR = .5, CONTACT_FRICTION = 5, MAX_SPEED = 18, SUBSTEPS = 3, ITERATIONS = 3;
-var PILE_EGG = 3, REST_SPEED = .35, REST_TIME = .6;
+var DIAMOND_R = 1.5, PILE_EGG = 3, REST_SPEED = .35, REST_TIME = .6;
 
-export function createBubblePile(drops, view) {
+export function createBubblePile(drops, view, crystal) {
   var eggDone = false;
 
   function toWorld(cx, cy) { return { x: (cx / view.W * 2 - 1) * view.halfW, y: (1 - cy / view.H * 2) * view.halfH }; }
@@ -82,6 +82,7 @@ export function createBubblePile(drops, view) {
             if (!pa.held) pa.vx *= f;
             if (!pb.held) pb.vx *= f;
           }
+          avoidDiamond(a);
           bounds(a);
         }
       }
@@ -95,6 +96,18 @@ export function createBubblePile(drops, view) {
       if (pa.rest > REST_TIME) resting++;
     }
     if (!eggDone && resting >= PILE_EGG) { eggDone = true; emit('egg:found', 'pile'); }
+  }
+
+  /* The diamond is a solid disc on the same plane: bubbles bounce off it instead of passing through. */
+  function avoidDiamond(d) {
+    var ph = d.phys;
+    if (ph.held || !crystal) return;
+    var R = DIAMOND_R * crystal.scale.x + d.r, dx = ph.x - crystal.position.x, dy = ph.y - crystal.position.y, dist = Math.hypot(dx, dy);
+    if (dist >= R) return;
+    if (dist < 1e-6) { dx = 0; dy = 1; dist = 1; }
+    var ux = dx / dist, uy = dy / dist, vn = ph.vx * ux + ph.vy * uy;
+    ph.x = crystal.position.x + ux * R; ph.y = crystal.position.y + uy * R;
+    if (vn < 0) { ph.vx -= (1 + BOUNCE + .2) * vn * ux; ph.vy -= (1 + BOUNCE + .2) * vn * uy; }
   }
 
   /* Floor and side walls of the viewport. */

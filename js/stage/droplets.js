@@ -1,6 +1,6 @@
 /* Glass droplets floating over the page: creation, drifting with the scroll, popping and re-growing.
    A droplet that was dragged and dropped has d.phys (see bubble-pile.js) and is drawn from there instead of its drifting path. */
-import { on, emit } from '../core/events.js';
+import { emit } from '../core/events.js';
 import { reduce } from '../core/env.js';
 import { easeOutBack } from '../core/util.js';
 import { sfx } from '../audio/sfx.js';
@@ -10,6 +10,7 @@ var COUNT = 30;
 var EGG_POP_TARGET = 10;
 
 export function createDroplets(THREE, scene, rnd, particles) {
+  /* Temporary rain bubbles (spawn) are removed from `drops` once popped. */
   var dropMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transmission:1,thickness:2.2,ior:1.4,
     attenuationColor:new THREE.Color(0xb9d3d5),attenuationDistance:3,envMapIntensity:2.2,clearcoat:1,clearcoatRoughness:0});
   var shTex=(function(){var c=document.createElement('canvas');c.width=c.height=128;var g=c.getContext('2d'),r=g.createRadialGradient(64,64,6,64,64,62);
@@ -31,7 +32,7 @@ export function createDroplets(THREE, scene, rnd, particles) {
   function dropScale(d,dt){
     if(!d.state||d.state==='live')return 1;
     d.t+=dt;
-    if(d.state==='pop'){if(d.t<.07)return 1+d.t/.07*.2;particles.burst(d.m.position,d.r);d.state='gone';d.t=0;return 0;}
+    if(d.state==='pop'){if(d.t<.07)return 1+d.t/.07*.2;particles.burst(d.m.position,d.r);d.state='gone';d.t=0;if(d.temp)d.dead=true;return 0;}
     if(d.state==='gone'){if(d.t>2.6){d.state='grow';d.t=0;d.phys=null;d.x=(rnd()*2-1)*.92;d.py=.12+rnd()*.76;d.s0px=window.scrollY;d.moved=true;d.ph=rnd()*6.28;}return 0;}
     var u=Math.min(1,d.t/.9);if(u>=1){d.state='live';return 1;}
     return easeOutBack(u);
@@ -39,17 +40,14 @@ export function createDroplets(THREE, scene, rnd, particles) {
 
   function popDrop(d) {
     if (d.state && d.state !== 'live') return;
-    d.state = 'pop'; d.t = 0; popped++;
+    d.state = 'pop'; d.t = 0;
     sfx.pop();
+    if (d.temp) return; // rain bubbles (see spawn) do not count towards the egg or the foam party
+    popped++;
     if (popped === EGG_POP_TARGET) emit('egg:found', 'bubbles');
+    if (popped % EGG_POP_TARGET === 0) emit('party:foam');
   }
 
-  function popAll() {
-    var list = drops.filter(function (d) { return d.m.visible && (!d.state || d.state === 'live'); })
-      .sort(function (a, b) { return a.m.position.x - b.m.position.x; });
-    list.forEach(function (d, i) { setTimeout(function () { popDrop(d); }, 120 + i * 70); });
-  }
-  on('bubbles:popAll', popAll);
 
   /* s: { T, dt, y (scrollY), vel (scroll velocity), mx (pointer x, -1..1) }, v: viewport metrics from layout */
   function update(s, v) {
@@ -67,6 +65,27 @@ export function createDroplets(THREE, scene, rnd, particles) {
       d.m.visible=d.sh.visible=ks>.01&&Math.abs(yy)<v.halfH+1.8;
       d.sh.position.set(xx+d.r*.3,yy-d.r*.42,zz-.4);
     }
+    for(i=drops.length-1;i>=0;i--){if(drops[i].dead){scene.remove(drops[i].m);scene.remove(drops[i].sh);drops.splice(i,1);}}
+  }
+
+  /* Pops every bubble currently on screen at once (the overdrive burst). Not counted towards the "bubbles" egg or the foam party; one sound only. */
+  function popVisible(v) {
+    for (var i = 0; i < drops.length; i++) {
+      var d = drops[i], p = d.m.position;
+      if ((d.state && d.state !== 'live') || !d.m.visible) continue;
+      if (Math.abs(p.x) > v.halfW + d.r || Math.abs(p.y) > v.halfH + d.r) continue;
+      d.state = 'pop'; d.t = 0;
+    }
+    sfx.pop();
+  }
+
+  /* Adds a temporary bubble that starts in physics (d.phys) at (x, y) on the z = 0 plane; it disappears for good when popped. */
+  function spawn(r, x, y, vx, vy) {
+    var m = new THREE.Mesh(dropGeo, dropMat), sh = new THREE.Mesh(shGeo, shMat);
+    m.scale.setScalar(r); sh.scale.setScalar(r * .9); sh.renderOrder = -50;
+    scene.add(m); scene.add(sh);
+    drops.push({ m: m, sh: sh, r: r, temp: true, moved: true, s0: 0, s0px: 0, x: 0, py: .5, f: 1, ph: rnd() * 6.28, z: 0, sp: 1, ax: 0, ay: 0,
+      phys: { x: x, y: y, z: 0, vx: vx, vy: vy, rest: 0 } });
   }
 
   /* Keeps each droplet's scroll anchor proportional to the page height (droplets that were popped and re-grown keep theirs). */
@@ -74,5 +93,5 @@ export function createDroplets(THREE, scene, rnd, particles) {
     for (var i = 0; i < drops.length; i++) { if (!drops[i].moved) drops[i].s0px = drops[i].s0 * maxScroll; }
   }
 
-  return { drops: drops, popDrop: popDrop, update: update, anchor: anchor, poppedCount: function () { return popped; } };
+  return { drops: drops, popDrop: popDrop, spawn: spawn, popVisible: popVisible, update: update, anchor: anchor, poppedCount: function () { return popped; } };
 }

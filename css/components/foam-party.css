@@ -1,0 +1,37 @@
+/* Foam party overlay (see js/features/foam-party.js): dimmed page, mirror ball, reflected light spots + foam (one canvas). Never takes clicks.
+   The ball is three.js (.fp-gl, js/ui/disco-ball.js); until it is ready, or without WebGL, a CSS ball stands in. */
+.foam-party{position:fixed;inset:0;z-index:11;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .6s}
+.foam-party.on{opacity:1}
+.fp-dim{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 10%,rgba(46,24,80,.4),rgba(6,5,18,.7))}
+.fp-foam{position:absolute;inset:0;width:100%;height:100%}
+
+/* Mirror ball hanging from the top, dropping in when the party starts. */
+.fp-ball{--d:150px;position:absolute;left:50%;top:0;width:var(--d);margin-left:calc(var(--d) / -2);transform:translateY(-260px);transition:transform 1.1s cubic-bezier(.3,1.35,.5,1)}
+.foam-party.on .fp-ball{transform:translateY(0)}
+.fp-string{width:2px;height:64px;margin:0 auto;background:linear-gradient(#6c6f78,#c9ccd3)}
+.fp-globe{position:relative;width:var(--d);height:var(--d);margin-top:-6px}
+.fp-gl{position:absolute;left:-30%;top:-30%;width:160%;height:160%;opacity:0;transition:opacity .25s}
+.foam-party.gl .fp-gl{opacity:1}
+
+/* CSS stand-in ball. */
+.fp-tiles{position:absolute;inset:0;border-radius:50%;overflow:hidden;transition:opacity .25s;
+  background:
+    repeating-linear-gradient(90deg,rgba(30,36,46,.55) 0 1px,transparent 1px 11px),
+    repeating-linear-gradient(0deg,rgba(30,36,46,.55) 0 1px,transparent 1px 11px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 22px,rgba(255,255,255,.55) 22px 33px,rgba(255,255,255,0) 33px 55px),
+    radial-gradient(circle at 35% 30%,#fff 0,#e7ecf2 18%,#9aa6b4 55%,#4c5562 100%);
+  background-size:11px 11px,11px 11px,55px 100%,100% 100%;
+  box-shadow:0 0 40px 8px rgba(255,255,255,.3),inset -10px -14px 24px rgba(0,0,0,.45);
+  animation:fp-turn 1.6s linear infinite}
+.foam-party.gl .fp-tiles{opacity:0}
+
+@keyframes fp-turn{to{background-position:11px 0,0 0,55px 0,0 0}}
+
+/* Reduced motion: everything stands still, only the overlay fades. */
+.foam-party.still .fp-tiles{animation:none}
+.foam-party.still .fp-ball{transition:none;transform:none}
+
+@media (max-width:560px){
+  .fp-ball{--d:104px}
+  .fp-string{height:48px}
+}

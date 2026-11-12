@@ -1,6 +1,7 @@
 /* 3D stage entry point: loads three.js, assembles the scene from its parts and runs the frame loop.
    If three.js or WebGL is unavailable the page falls back to its static look (class "no-gl"). */
 import { root, reduce } from '../core/env.js';
+import { emit, on } from '../core/events.js';
 import { createRng } from '../core/util.js';
 import { ORBIT_ORDER } from '../data/orbit-icons.js';
 import { loadThree } from './three-loader.js';
@@ -23,8 +24,10 @@ import { createInteraction } from './interaction.js';
 import { createHud } from './hud.js';
 import { createOverdrive } from './overdrive.js';
 import { createBubblePile } from './bubble-pile.js';
+import { createBubbleRain } from './bubble-rain.js';
+import { createGemBurst } from './gem-burst.js';
 
-function markNoGL() { root.classList.add('no-gl'); }
+function markNoGL() { root.classList.add('no-gl'); emit('stage:nogl'); }
 
 export function initStage() {
   loadThree().then(start).catch(function (e) {
@@ -68,7 +71,14 @@ function start(THREE) {
 
   /* input + readout (overdrive: easter egg fed by the drag rotation) */
   var overdrive = createOverdrive(THREE, diamond.crystal, cam, view, textures, particles, reduce);
-  var pile = createBubblePile(droplets.drops, view);
+  var pile = createBubblePile(droplets.drops, view, diamond.crystal);
+  var rain = createBubbleRain(droplets.spawn, view, diamond.crystal, rnd, reduce);
+  var burst = createGemBurst(reduce);
+  on('egg:found', function (id) {
+    if (id === 'gem') burst.trigger(); // double-click: gem swells, badges fly out and return
+    if (id === 'pile') rain.start();
+    if (id === 'overdrive') droplets.popVisible(view); // the fast-spinning diamond bursts every bubble on screen
+  });
   var motion = createMotion(layout, reduce);
   var interaction = createInteraction(THREE, {
     cam: cam, crystal: diamond.crystal, dragG: diamond.dragG,
@@ -86,17 +96,20 @@ function start(THREE) {
     var IT = intro.elapsed(now);
     highlight.update(dt);
     overdrive.update(dt);
+    burst.update(dt);
+    var bl = burst.level();
 
     diamond.update({
       cur: motion.cur, T: T, IT: IT, highlightLevel: highlight.level(),
       mx: motion.mx, my: motion.my, vel: motion.vel, scrollSm: motion.scrollSm,
-      boostSpin: overdrive.spin(), boostScale: overdrive.scale()
+      boostSpin: overdrive.spin(), boostScale: overdrive.scale() * (1 + .14 * bl)
     }, view);
     if (shards) shards.update(IT, intro.started());
     flash.update(IT);
     interaction.update(dt);
-    if (ring) ring.update({ T: T, dt: dt, IT: IT, scrollSm: motion.scrollSm, highlightKey: highlight.key(), highlightLevel: highlight.level() });
+    if (ring) ring.update({ T: T, dt: dt, IT: IT, scrollSm: motion.scrollSm, highlightKey: highlight.key(), highlightLevel: highlight.level(), spread: bl });
 
+    rain.update(dt);
     pile.step(dt);
     droplets.update({ T: T, dt: dt, y: y, vel: motion.vel, mx: motion.mx }, view);
     particles.step(dt);

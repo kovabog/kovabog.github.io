@@ -5,5 +5,5 @@ html.dragging,html.dragging *{user-select:none;-webkit-user-select:none;cursor:g
 .no-gl body::before{background:radial-gradient(900px 600px at 80% 10%,#fff 0%,transparent 60%),radial-gradient(800px 700px at 10% 60%,#d9e3e6 0%,transparent 60%),var(--paper)}
 .no-gl canvas#stage{display:none}
 @media (max-width:900px){
-  .hud{display:none}
+  .hud{bottom:10px;font-size:11px}
 }
