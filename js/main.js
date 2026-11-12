@@ -12,6 +12,8 @@ import { initOrbitLinks } from './features/orbit-links.js';
 import { initTddDemo } from './features/tdd-demo.js';
 import { initMatrixRain } from './features/matrix-rain.js';
 import { initGoodBoy } from './features/good-boy.js';
+import { initDevMode } from './features/dev-mode.js';
+import { initSpeedometer } from './features/speedometer.js';
 import { initStage } from './stage/index.js';
 
 initCounters();
@@ -27,4 +29,6 @@ initOrbitLinks();
 initTddDemo();
 initMatrixRain();
 initGoodBoy();
+initDevMode();
+initSpeedometer();
 initStage();

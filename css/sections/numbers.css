@@ -20,3 +20,7 @@
 @media (max-width:560px){
   .numgrid{grid-template-columns:1fr}
 }
+/* the "9" revs like a speedometer when clicked (easter egg, see js/features/speedometer.js) */
+.stat .n[data-speedo]{cursor:pointer;width:fit-content;transform-origin:20% 90%;transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.stat .n[data-speedo]:hover{transform:rotate(-3deg)}
+.stat .n[data-speedo].revving{transform:rotate(-6deg) scale(1.04)}

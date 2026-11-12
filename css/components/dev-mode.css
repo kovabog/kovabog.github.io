@@ -1,0 +1,6 @@
+/* Dev mode (easter egg, see js/features/dev-mode.js): faint 8px layout grid and an FPS counter. */
+.devgrid{position:fixed;inset:0;z-index:13;pointer-events:none;
+  background-image:linear-gradient(to right,rgba(29,109,104,.09) 1px,transparent 1px),linear-gradient(to bottom,rgba(29,109,104,.09) 1px,transparent 1px);
+  background-size:8px 8px}
+.devfps{position:fixed;right:16px;bottom:16px;z-index:13;pointer-events:none;padding:5px 10px;border-radius:8px;background:var(--ink);color:#7fe3a6;
+  font-variant-numeric:tabular-nums;text-transform:none}
