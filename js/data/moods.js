@@ -2,8 +2,8 @@
    To switch a mood off, set its flag to false. Each mood is self-contained in js/features/mood-*.js + css/moods/*.css. */
 export var MOODS = {
   night: true,      // 22:00-06:00: darker palette, moon, twinkling stars
-  morning: true,    // 05:00-11:00: "Доброго ранку" in the hero for a few seconds
-  christmas: true   // Dec 24-26: falling snow, lights on the header, "З Різдвом!"
+  morning: true,    // 05:00-11:00: "Good morning" in the hero for a few seconds
+  christmas: true   // Dec 24-26: falling snow, lights on the header, "Merry Christmas!"
 };
 
 export var NIGHT = { from: 22, to: 6 };

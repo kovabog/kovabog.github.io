@@ -1,5 +1,5 @@
 /* Christmas mood, Dec 24-26 (?date=2026-12-25 to test): adds html.xmas, falling snow behind the content, a string of
-   lights on the navigation and a "З Різдвом!" note in the hero. It is a themed state of the same page.
+   lights on the navigation and a "Merry Christmas!" note in the hero. It is a themed state of the same page.
    Off switch: MOODS.christmas in data/moods.js (or delete this file, its init line and css/moods/christmas.css).
    Reduced motion: no snow and the lights do not twinkle. */
 import { root, reduce } from '../core/env.js';
@@ -16,7 +16,7 @@ export function initMoodChristmas() {
 
   root.classList.add('xmas');
   lights();
-  heroNote('З Різдвом!', { lang: 'uk', cls: 'xmas' });
+  heroNote('Merry Christmas!', { lang: 'en', cls: 'xmas' });
   if (!reduce) snow();
 }
 
