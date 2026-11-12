@@ -14,6 +14,7 @@ import { initMatrixRain } from './features/matrix-rain.js';
 import { initGoodBoy } from './features/good-boy.js';
 import { initDevMode } from './features/dev-mode.js';
 import { initSpeedometer } from './features/speedometer.js';
+import { initConfetti } from './features/confetti.js';
 import { initStage } from './stage/index.js';
 
 initCounters();
@@ -31,4 +32,5 @@ initMatrixRain();
 initGoodBoy();
 initDevMode();
 initSpeedometer();
+initConfetti();
 initStage();

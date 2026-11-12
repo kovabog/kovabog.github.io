@@ -21,6 +21,7 @@ import { loadBadgeTextures } from './badge-textures.js';
 import { createOrbitRing } from './orbit-ring.js';
 import { createInteraction } from './interaction.js';
 import { createHud } from './hud.js';
+import { createOverdrive } from './overdrive.js';
 
 function markNoGL() { root.classList.add('no-gl'); }
 
@@ -64,11 +65,12 @@ function start(THREE) {
     intro.begin();
   });
 
-  /* input + readout */
+  /* input + readout (overdrive: easter egg fed by the drag rotation) */
+  var overdrive = createOverdrive(THREE, diamond.crystal, cam, view, textures, particles, reduce);
   var motion = createMotion(layout, reduce);
   var interaction = createInteraction(THREE, {
     cam: cam, crystal: diamond.crystal, dragG: diamond.dragG,
-    drops: droplets.drops, view: view, popDrop: droplets.popDrop
+    drops: droplets.drops, view: view, popDrop: droplets.popDrop, onSpin: overdrive.addSpin
   });
   var hud = createHud();
 
@@ -81,10 +83,12 @@ function start(THREE) {
     motion.update(dt, y);
     var IT = intro.elapsed(now);
     highlight.update(dt);
+    overdrive.update(dt);
 
     diamond.update({
       cur: motion.cur, T: T, IT: IT, highlightLevel: highlight.level(),
-      mx: motion.mx, my: motion.my, vel: motion.vel, scrollSm: motion.scrollSm
+      mx: motion.mx, my: motion.my, vel: motion.vel, scrollSm: motion.scrollSm,
+      boostSpin: overdrive.spin(), boostScale: overdrive.scale()
     }, view);
     if (shards) shards.update(IT, intro.started());
     flash.update(IT);
@@ -96,7 +100,7 @@ function start(THREE) {
     background.update(reduce ? 0 : T, y);
 
     renderer.render(scene, cam);
-    hud.update(dt, diamond.spin, y, view.maxScroll, droplets.poppedCount());
+    hud.update(dt, diamond.spin, y, view.maxScroll, droplets.poppedCount(), overdrive.rpm());
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);

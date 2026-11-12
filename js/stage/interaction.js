@@ -1,10 +1,12 @@
-/* Pointer interaction with the 3D scene: drag/flick the diamond, double-tap it, pop bubbles. */
+/* Pointer interaction with the 3D scene: drag/flick the diamond, double-tap it, pop bubbles.
+   Every rotation applied to the diamond (drag or flick inertia) is reported to scene3d.onSpin(radians) for the overdrive egg. */
 import { root } from '../core/env.js';
 import { emit } from '../core/events.js';
 import { sfx } from '../audio/sfx.js';
 
 export function createInteraction(THREE, scene3d) {
   var cam = scene3d.cam, crystal = scene3d.crystal, dragG = scene3d.dragG, drops = scene3d.drops, view = scene3d.view, popDrop = scene3d.popDrop;
+  var onSpin = scene3d.onSpin || function () {};
 
   var dragQ = new THREE.Quaternion(), IDQ = new THREE.Quaternion(), _qa = new THREE.Quaternion(), _ax = new THREE.Vector3(), _v = new THREE.Vector3();
   var dragging = false, dvx = 0, dvy = 0, lpx = 0, lpy = 0, lpt = 0, idle = 9, lastTap = 0;
@@ -14,6 +16,14 @@ export function createInteraction(THREE, scene3d) {
     _qa.setFromAxisAngle(_ax.set(0, 1, 0), dx); dragQ.premultiply(_qa);
     _qa.setFromAxisAngle(_ax.set(1, 0, 0), dy); dragQ.premultiply(_qa);
     dragQ.normalize();
+  }
+
+  /* Pointer path length since the last event, including the moves the browser coalesced into this one (fast wiggles would cancel out otherwise). */
+  function pathLength(e, fromX, fromY) {
+    var list = e.getCoalescedEvents ? e.getCoalescedEvents() : null, len = 0, px = fromX, py = fromY;
+    if (!list || !list.length) list = [e];
+    for (var i = 0; i < list.length; i++) { len += Math.hypot(list[i].clientX - px, list[i].clientY - py); px = list[i].clientX; py = list[i].clientY; }
+    return len;
   }
 
   /* Page UI that should keep its normal pointer behaviour. */
@@ -39,7 +49,7 @@ export function createInteraction(THREE, scene3d) {
   window.addEventListener('pointermove', function (e) {
     if (dragging) {
       var now = performance.now(), dtt = Math.max(8, now - lpt) / 1000, dx = (e.clientX - lpx) * .0085, dy = (e.clientY - lpy) * .0085;
-      turn(dx, dy); dvx = dx / dtt; dvy = dy / dtt; lpx = e.clientX; lpy = e.clientY; lpt = now; idle = 0; return;
+      turn(dx, dy); onSpin(pathLength(e, lpx, lpy) * .0085); dvx = dx / dtt; dvy = dy / dtt; lpx = e.clientX; lpy = e.clientY; lpt = now; idle = 0; return;
     }
     if (e.pointerType !== 'mouse') return;
     var h = isUI(e.target) ? null : pick(e.clientX, e.clientY);
@@ -75,7 +85,7 @@ export function createInteraction(THREE, scene3d) {
     /* Applies drag inertia, eases back to rest when idle, and writes the rotation to the drag group. */
     update: function (dt) {
       if (!dragging) {
-        if (Math.abs(dvx) + Math.abs(dvy) > .002) { turn(dvx * dt, dvy * dt); var dmp = Math.exp(-dt * 2.6); dvx *= dmp; dvy *= dmp; }
+        if (Math.abs(dvx) + Math.abs(dvy) > .002) { turn(dvx * dt, dvy * dt); onSpin(Math.hypot(dvx, dvy) * dt); var dmp = Math.exp(-dt * 2.6); dvx *= dmp; dvy *= dmp; }
         idle += dt; if (idle > 2.5) dragQ.slerp(IDQ, 1 - Math.exp(-dt * .7));
       }
       dragG.quaternion.copy(dragQ);
