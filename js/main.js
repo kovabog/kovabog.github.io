@@ -10,6 +10,7 @@ import { initEasterEggs } from './features/easter-eggs.js';
 import { initKonami } from './features/konami.js';
 import { initOrbitLinks } from './features/orbit-links.js';
 import { initTddDemo } from './features/tdd-demo.js';
+import { initMatrixRain } from './features/matrix-rain.js';
 import { initStage } from './stage/index.js';
 
 initCounters();
@@ -23,4 +24,5 @@ initEasterEggs();
 initKonami();
 initOrbitLinks();
 initTddDemo();
+initMatrixRain();
 initStage();

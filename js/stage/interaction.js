@@ -17,7 +17,7 @@ export function createInteraction(THREE, scene3d) {
   }
 
   /* Page UI that should keep its normal pointer behaviour. */
-  function isUI(t) { return t && t.closest && t.closest('a,button,input,textarea,select,label,nav,.card,.lg,.tool,.iconrow,.links,.facts'); }
+  function isUI(t) { return t && t.closest && t.closest('a,button,input,textarea,select,label,nav,.card,.lg,.tool,.iconrow,.links,.facts,.secret,[data-speedo]'); }
 
   /* Nearest thing under the pointer: the gem or a live droplet. */
   function pick(cx, cy) {
