@@ -11,6 +11,7 @@ import { initKonami } from './features/konami.js';
 import { initOrbitLinks } from './features/orbit-links.js';
 import { initTddDemo } from './features/tdd-demo.js';
 import { initMatrixRain } from './features/matrix-rain.js';
+import { initGoodBoy } from './features/good-boy.js';
 import { initStage } from './stage/index.js';
 
 initCounters();
@@ -25,4 +26,5 @@ initKonami();
 initOrbitLinks();
 initTddDemo();
 initMatrixRain();
+initGoodBoy();
 initStage();

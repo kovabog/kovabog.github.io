@@ -16,3 +16,15 @@
 .dog-sit{position:absolute;right:14px;bottom:100%;width:56px;height:auto;margin-bottom:-26px;image-rendering:pixelated;pointer-events:none;filter:drop-shadow(0 4px 4px rgba(20,48,47,.18));transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
 .dogtile:hover .dog-sit{transform:translateY(-4px) rotate(3deg)}
 @media (max-width:560px){.dog{width:140px}.dog-say{font-size:13.5px;left:50%;translate:-62% 0;white-space:normal;width:max-content;max-width:min(230px,78vw);border-radius:16px}}
+/* petting the sitting dog (easter egg, see js/features/good-boy.js): nod on hover, "Good boy +1" float, counter badge */
+.dog-sit{pointer-events:auto;cursor:pointer;user-select:none;-webkit-user-drag:none}
+.dog-sit:hover{animation:nod .7s ease-in-out infinite}
+.dog-sit.nod{animation:nod-once .45s ease-in-out}
+@keyframes nod{0%,100%{transform:translateY(-4px) rotate(3deg)}50%{transform:translateY(-1px) rotate(-3deg)}}
+@keyframes nod-once{0%,100%{transform:none}35%{transform:translateY(2px) rotate(-5deg)}70%{transform:translateY(-3px) rotate(3deg)}}
+.goodboy{position:absolute;right:76px;bottom:calc(100% + 8px);padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.8);border:1px solid var(--line);
+  font-size:10.5px;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.goodboy.on{opacity:1;transform:none}
+.goodboy-float{position:absolute;right:20px;bottom:calc(100% + 34px);font:600 14px/1 var(--display);color:var(--teal);white-space:nowrap;pointer-events:none;
+  animation:goodboy-up 1.1s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes goodboy-up{0%{opacity:0;transform:translateY(8px) scale(.8)}20%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-36px)}}
