@@ -6,7 +6,7 @@
      machine    "Run tests" until one fails on "my machine"       features/tdd-demo
      goodboy    pet (click) the dog sitting on the Dog owner tile features/good-boy
      devmode    click the "BK" logo 5 times within 3 seconds      features/dev-mode
-     speedo     click the "9" in the Numbers section              features/speedometer
+     speedo     click the "9" in the Impact section             features/speedometer
      overdrive  spin the diamond ~3 full turns within 2 seconds   stage/overdrive
      pile       drag bubbles and drop 3 of them into a pile       stage/bubble-pile
      rubber     keep scrolling past the very bottom of the page   features/rubber-band
@@ -49,7 +49,7 @@ export var HINTS = {
   machine: 'In the Craft section the tests pass on their own. Press “Run again” once.',
   goodboy: 'Somebody sits on the “Dog owner” tile in the Human section. Pet him.',
   dogclick: 'Click the big dog while he is on screen. He shows up in the Human section.',
-  speedo: 'In Numbers, one of the digits wants to be revved. Click it.',
+  speedo: 'In Impact, one of the digits wants to be revved. Click it.',
   devmode: 'The BK logo in the menu has a secret. Click it five times, fast.',
   rubber: 'Scroll to the very bottom of the page. Then keep scrolling.'
 };

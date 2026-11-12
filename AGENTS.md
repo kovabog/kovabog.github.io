@@ -83,7 +83,7 @@ js/
 ### Page sections (index.html, in order)
 
 `#top` hero · `#stack` composition donut + toolbox · `#path` career timeline, languages, education ·
-`#numbers` four stats · `#craft` how he works + live TDD terminal (`#tdd`) · `#human` hobby tiles
+`#numbers` "Impact": two stats ("9" years, "20×") + "Beyond the code" list · `#craft` how he works + live TDD terminal (`#tdd`) · `#human` hobby tiles
 (`[data-dog]` "Dog owner") · `#contact`.
 
 Each `<section>` carries `data-cx/cy/cs/tilt` (desktop) and `data-mx/my/ms` (mobile, < 900px):

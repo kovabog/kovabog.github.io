@@ -1,4 +1,4 @@
-/* Easter egg "speedo". Trigger: click (or Enter/Space on) the big "9" of "9 years" in the Numbers section.
+/* Easter egg "speedo". Trigger: click (or Enter/Space on) the big "9" of "9 years" in the Impact section.
    The number revs from 0 to 9 like a speedometer needle: eases out, overshoots a little, settles on 9.
    Clicks during the animation are ignored. Reduced motion: no animation, the egg still counts. */
 import { emit } from '../core/events.js';
