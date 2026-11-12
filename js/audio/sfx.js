@@ -14,7 +14,8 @@ export var sfx = (function () {
     o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+.03);
   }
   function play(fn,create){var c=ac(create!==false);if(!c)return;try{fn(c);}catch(e){}}
-  function buzz(p){if(muted)return;try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
+  /* Chrome blocks (and logs an error for) vibrate() before the first tap, so wait for a user activation. */
+  function buzz(p){if(muted)return;try{var ua=navigator.userActivation;if(ua&&!ua.hasBeenActive)return;if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
   function barkOne(c,delay){
     var t=c.currentTime+(delay||0),o=c.createOscillator(),f=c.createBiquadFilter(),g=c.createGain();
     o.type='sawtooth';o.frequency.setValueAtTime(380,t);o.frequency.linearRampToValueAtTime(560,t+.035);o.frequency.exponentialRampToValueAtTime(210,t+.17);
