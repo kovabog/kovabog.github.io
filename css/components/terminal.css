@@ -22,3 +22,19 @@
 .term-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#35c46a,#7fe3a6);transition:width .3s}
 .term-foot{padding:10px 16px 13px;color:#8fb3b0;text-transform:none;letter-spacing:.01em}
 .term-foot .ok{color:#7fe3a6}.term-foot .bad{color:#ff8f84}
+/* "Works on my machine" stamp (easter egg, see js/features/tdd-demo.js) */
+.card.term-card{position:relative}
+.wfm-stamp{position:absolute;right:18px;top:96px;z-index:2;pointer-events:none;display:grid;justify-items:center;gap:2px;padding:10px 16px 9px;
+  border:3px double #ff8f84;border-radius:12px;color:#ff8f84;background:rgba(18,41,42,.72);font-family:var(--mono);text-transform:uppercase;
+  transform:rotate(-11deg);animation:stamp .42s cubic-bezier(.2,1.4,.4,1) both}
+.wfm-stamp b{font-size:14px;font-weight:600;letter-spacing:.06em}
+.wfm-stamp span{font-size:11px;letter-spacing:.18em;color:#7fe3a6}
+@keyframes stamp{from{opacity:0;transform:rotate(-24deg) scale(1.9)}to{opacity:1;transform:rotate(-11deg) scale(1)}}
+/* Two lines reserved for the result line on narrow cards, so a longer result never pushes the page down. */
+@media (max-width:900px){
+  .term-foot{min-height:calc(2 * 1.5em + 23px)}
+}
+@media (max-width:560px){
+  .wfm-stamp{right:12px;top:auto;bottom:96px;padding:8px 12px 7px}
+  .wfm-stamp b{font-size:12px}
+}
