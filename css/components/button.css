@@ -1,6 +1,7 @@
 /* Buttons. */
 .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;font:500 15px/1 var(--body);text-decoration:none;cursor:pointer;border:1px solid var(--ink);
   background:var(--ink);color:#f4fbfa;transition:transform .25s,background .25s,box-shadow .25s}
+.btn[hidden]{display:none}
 .btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(20,48,47,.6)}
 .btn.ghost{background:rgba(255,255,255,.5);color:var(--ink);border-color:var(--line)}
 .btn.sm{padding:9px 16px;font-size:14px}
