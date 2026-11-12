@@ -22,6 +22,7 @@ import { createOrbitRing } from './orbit-ring.js';
 import { createInteraction } from './interaction.js';
 import { createHud } from './hud.js';
 import { createOverdrive } from './overdrive.js';
+import { createBubblePile } from './bubble-pile.js';
 
 function markNoGL() { root.classList.add('no-gl'); }
 
@@ -67,10 +68,11 @@ function start(THREE) {
 
   /* input + readout (overdrive: easter egg fed by the drag rotation) */
   var overdrive = createOverdrive(THREE, diamond.crystal, cam, view, textures, particles, reduce);
+  var pile = createBubblePile(droplets.drops, view);
   var motion = createMotion(layout, reduce);
   var interaction = createInteraction(THREE, {
     cam: cam, crystal: diamond.crystal, dragG: diamond.dragG,
-    drops: droplets.drops, view: view, popDrop: droplets.popDrop, onSpin: overdrive.addSpin
+    drops: droplets.drops, view: view, popDrop: droplets.popDrop, onSpin: overdrive.addSpin, pile: pile
   });
   var hud = createHud();
 
@@ -95,6 +97,7 @@ function start(THREE) {
     interaction.update(dt);
     if (ring) ring.update({ T: T, dt: dt, IT: IT, scrollSm: motion.scrollSm, highlightKey: highlight.key(), highlightLevel: highlight.level() });
 
+    pile.step(dt);
     droplets.update({ T: T, dt: dt, y: y, vel: motion.vel, mx: motion.mx }, view);
     particles.step(dt);
     background.update(reduce ? 0 : T, y);
