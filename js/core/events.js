@@ -5,6 +5,7 @@
      orbit:highlight  (key|null) a stack icon is hovered; the 3D orbit should light up that badge
      egg:found        (id)       the visitor triggered an easter egg
      bubbles:popAll   ()         pop every visible bubble in the 3D scene
+     confetti:burst   ({x, y})   throw confetti from that viewport point (the diamond's overdrive burst)
 */
 
 var handlers = {};

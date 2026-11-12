@@ -7,7 +7,8 @@ A static page, no build step:
 - a diamond rendered in WebGL (three.js) that assembles from the tech stack, follows the scroll and can be dragged;
 - glass bubbles you can pop;
 - a live TDD demo: tests fail, an agent writes the code, tests go green;
-- a pixel-art bull terrier (running sprite + one sitting on the "Dog owner" tile) and 3 easter eggs;
+- a pixel-art bull terrier (running sprite + one sitting on the "Dog owner" tile) and 11 easter eggs (listed in `js/data/eggs.js`, counted in the footer);
+- time-based moods: night theme (22–06), a morning greeting (05–11) and Christmas (Dec 24–26); test any of them with `?time=23:30` or `?date=2026-12-25`;
 - subtle sounds and haptics with a mute toggle.
 
 three.js and Google Fonts load from CDNs. The page uses native ES modules, so serve the folder over HTTP to run it locally (for example `python3 -m http.server`, then open http://localhost:8000); opening `index.html` straight from disk will not work.
@@ -28,22 +29,25 @@ css/
   components/           button, card, icon, sound toggle, toast, TDD terminal, dog
   sections/             one file per page section (hero, stack, path, numbers, craft, human, contact)
   stage/                WebGL canvas layer, HUD readout, no-WebGL fallback
+  moods/                night and Christmas themes
 js/
   main.js               entry point: starts every feature
   boot/js-flag.js       adds the "js" class before first paint (classic script in <head>)
-  core/                 env (reduced motion), util (math, rng, wait), events (pub/sub hub)
-  data/                 static data: CV (base64 PDF), orbit badge SVGs, TDD demo source
+  core/                 env (reduced motion), util (math, rng, wait), events (pub/sub hub),
+                        store (safe localStorage), clock (local time + ?time/?date overrides)
+  data/                 static data: CV (base64 PDF), orbit badge SVGs, TDD demo source, easter eggs, mood flags
   audio/sfx.js          sound + haptics engine
-  ui/toast.js           transient notification
+  ui/                   toast (transient notification), hero-note (greetings above the hero)
   features/             one module per page behaviour
                         reveal, counters, donut, nav, contact, sound-ui, dog, dog-triggers,
-                        easter-eggs, konami, orbit-links, tdd-demo
+                        easter-eggs, konami, orbit-links, tdd-demo, matrix-rain, good-boy,
+                        dev-mode, speedometer, confetti, rubber-band, mood-night, mood-morning, mood-christmas
   stage/                3D scene, split by concern
                         index (assembly + frame loop), context (renderer/camera), layout (viewport + scroll poses),
                         motion (smoothed scroll/pointer state), background, studio-environment,
                         diamond + gem-geometry + gem-material, orbit-ring + badge-textures,
                         intro + intro-flash + intro-shards, highlight, droplets, particles, textures,
-                        interaction (drag/pick/pop), hud
+                        interaction (drag/pick/pop), hud, overdrive, bubble-pile
 ```
 
 Modules do not call each other's internals. They communicate through `js/core/events.js`:
@@ -52,5 +56,6 @@ Modules do not call each other's internals. They communicate through `js/core/ev
 | ----------------- | ---------------------------------- | ------------------------- |
 | `reveal`          | features/reveal                    | features/counters, donut  |
 | `orbit:highlight` | features/orbit-links               | stage/highlight           |
-| `egg:found`       | features/konami, stage/droplets, stage/interaction | features/easter-eggs |
+| `egg:found`       | every easter-egg trigger           | features/easter-eggs      |
 | `bubbles:popAll`  | features/easter-eggs               | stage/droplets            |
+| `confetti:burst`  | stage/overdrive                    | features/confetti         |

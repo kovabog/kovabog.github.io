@@ -11,7 +11,7 @@ Live at **https://kovabog.github.io**, served by GitHub Pages straight from `mai
 Purpose: a recruiter or hiring manager opens it from a CV or LinkedIn and, in under a minute, learns
 who Bohdan is (stack, career path, numbers, personality) and how to contact him. It doubles as a
 showcase of front-end craft: a WebGL diamond built from his tech stack, poppable glass bubbles,
-a live TDD demo, a pixel-art bull terrier and three easter eggs.
+a live TDD demo, a pixel-art bull terrier, eleven easter eggs and time-based moods (night, morning, Christmas).
 
 Audience and tone: English, concise, confident, a little playful. Facts must match the CV
 (ELEKS 2021–present, Gentlecode 2018–2021, Biencode 2017–2018; .NET 8, Azure, Angular/React, SQL Server).
@@ -42,9 +42,11 @@ css/                  loaded in this order by <link> tags in index.html
   base/               tokens.css (colors, fonts – the only place for :root vars), reset, typography,
                       motion (.reveal states + reduced-motion)
   layout/             page.css (sections, wraps, panels, footer), nav.css
-  components/         button, card, icon, sound-toggle, toast, terminal (TDD demo), dog
+  components/         button, card, icon, sound-toggle, toast, terminal (TDD demo), dog,
+                      matrix, dev-mode, confetti, rubber-band (easter-egg overlays)
   sections/           one file per section: hero, stack, path, numbers, craft, human, contact
   stage/stage.css     WebGL canvas layer, HUD, no-gl fallback, drag cursor
+  moods/              night.css (html.night palette overrides), christmas.css (html.xmas); loaded last
 js/
   boot/js-flag.js     classic <head> script: adds class "js" before first paint
   main.js             entry module: calls every init*() – nothing else
@@ -52,20 +54,27 @@ js/
     env.js            root element, `reduce` flag
     util.js           wait, clamp01, lerp, smoothstep, easeOutBack, createRng (deterministic)
     events.js         on(name, fn) / emit(name, payload) – the only channel between modules
+    store.js          load(key, fallback) / save(key, value): localStorage wrapped in try/catch
+    clock.js          now() local date/time with ?time=HH:MM and ?date=YYYY-MM-DD test overrides
   data/               static data only: cv-pdf.js (base64 PDF), orbit-icons.js (badge SVGs + order),
-                      tdd-source.js (C# typed by the demo)
+                      tdd-source.js (C# typed by the demo), eggs.js (every egg id + dog line; total = its size),
+                      moods.js (on/off flags and hours for the time-based moods)
   audio/sfx.js        Web Audio sounds + vibration; mute flag in localStorage
   ui/toast.js         toast(html)
+  ui/hero-note.js     heroNote(text, opts): absolutely positioned note above the hero eyebrow
   features/           one page behaviour per file, each exports initX():
                       reveal, counters, donut, nav, contact, sound-ui, dog (sprite controller:
                       dog.runBy(msg), dog.jump(msg)), dog-triggers (when the dog appears),
-                      easter-eggs (counting + reactions), konami, orbit-links, tdd-demo
+                      easter-eggs (counting, persistence, footer counter, reactions), konami, orbit-links,
+                      tdd-demo, matrix-rain, good-boy, dev-mode, speedometer, confetti, rubber-band,
+                      mood-night, mood-morning, mood-christmas
   stage/              the three.js scene; index.js assembles parts and runs the frame loop
                       context (renderer/scene/camera), layout (viewport + scroll→pose from data-c*/data-m*),
                       motion (eased scroll/pointer), background (caustics shader), studio-environment,
                       diamond + gem-geometry + gem-material (ray-traced refraction), badge-textures +
                       orbit-ring, intro + intro-flash + intro-shards, highlight, droplets, particles,
-                      textures, interaction (drag/flick/pick/pop), hud
+                      textures, interaction (drag/flick/pick/pop/bubble drag), hud,
+                      overdrive (spin-fast egg), bubble-pile (drag-and-drop physics)
 ```
 
 ### Page sections (index.html, in order)
@@ -84,10 +93,13 @@ where the diamond sits while that section is on screen, in fractions of half the
 | ----------------- | ---------- | --------------------------------------------------- | ------------------------ |
 | `reveal`          | element    | features/reveal                                     | counters, donut          |
 | `orbit:highlight` | key / null | features/orbit-links                                | stage/highlight          |
-| `egg:found`       | id         | features/konami, stage/droplets, stage/interaction  | features/easter-eggs     |
+| `egg:found`       | id         | any egg trigger (see data/eggs.js)                  | features/easter-eggs     |
 | `bubbles:popAll`  | –          | features/easter-eggs                                | stage/droplets           |
+| `confetti:burst`  | { x, y }   | stage/overdrive                                     | features/confetti        |
 
-Easter egg ids: `konami`, `bubbles` (10 popped), `gem` (double-click/tap the diamond). `TOTAL = 3` in easter-eggs.js.
+Easter eggs are listed, with their triggers, in `js/data/eggs.js`; the footer total is the size of that list.
+A new egg: add its id + dog line there and `emit('egg:found', id)` from the trigger. Found ids persist in
+localStorage (`bk-eggs`). Time-based moods are not eggs; test them with `?time=23:30` / `?date=2026-12-25`.
 
 ## Conventions
 
@@ -97,7 +109,7 @@ Easter egg ids: `konami`, `bubbles` (10 popped), `gem` (double-click/tap the dia
   Shared helpers go to `core/`, constants and content to `data/`.
 - Style matches existing code: ES5-style `var`/`function` inside ES modules, named exports only,
   short header comment `/* What this file does. */` at the top of every file.
-- Colors, fonts and radii come from `css/base/tokens.css`. Responsive rules live next to the rules they
+- Colors, fonts and radii come from `css/base/tokens.css` (the night palette overrides them in `css/moods/night.css`). Responsive rules live next to the rules they
   change, inside the same file (`@media (max-width:900px)` and `(max-width:560px)`).
 - Icons: add a `<symbol id="i-name">` to `img/icons.svg`; to link an icon to an orbit badge, map it in
   `ORBIT_KEY` in `features/orbit-links.js`.
@@ -112,7 +124,8 @@ Easter egg ids: `konami`, `bubbles` (10 popped), `gem` (double-click/tap the dia
 1. `python3 -m http.server` in the repo root, open the page, watch the console: no errors, no 404s.
 2. Check desktop (~1280px) and mobile (~390px); scroll through every section.
 3. Check the interactive bits you touched: nav scroll, donut hover, counters, TDD demo, bubbles,
-   Konami code, dog run-by in `#human` and the jump on the "Dog owner" tile, sound toggle, copy email.
+   Konami code, dog run-by in `#human` and the jump on the "Dog owner" tile, sound toggle, copy email,
+   and any easter egg you touched (triggers in `js/data/eggs.js`); moods via `?time=` / `?date=`.
 4. Emulate reduced motion and, for stage changes, a browser without WebGL (no-gl fallback).
 
 ## Git
