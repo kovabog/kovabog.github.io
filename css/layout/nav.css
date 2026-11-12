@@ -9,3 +9,9 @@ nav a.l:hover{color:var(--ink);background:rgba(20,48,47,.06)}
   nav a.l{display:none}
   nav{padding-left:14px}
 }
+/* the accent dot after "BK" winks on hover */
+nav{white-space:nowrap}
+nav .mark{cursor:pointer;user-select:none}
+.mark-dot{display:inline-block;width:6px;height:6px;margin-left:2px;border-radius:50%;background:var(--teal);vertical-align:baseline;transform-origin:50% 60%}
+nav .mark:hover .mark-dot,nav .mark:focus-visible .mark-dot{animation:wink .3s ease-in-out}
+@keyframes wink{0%,100%{transform:none}45%{transform:scale(1.7,.18);border-radius:3px}}

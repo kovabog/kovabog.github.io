@@ -1,8 +1,10 @@
-/* Glass droplets floating over the page: creation, drifting with the scroll, popping and re-growing. */
+/* Glass droplets floating over the page: creation, drifting with the scroll, popping and re-growing.
+   A droplet that was dragged and dropped has d.phys (see bubble-pile.js) and is drawn from there instead of its drifting path. */
 import { on, emit } from '../core/events.js';
 import { reduce } from '../core/env.js';
 import { easeOutBack } from '../core/util.js';
 import { sfx } from '../audio/sfx.js';
+import { CAMZ } from './context.js';
 
 var COUNT = 30;
 var EGG_POP_TARGET = 10;
@@ -30,7 +32,7 @@ export function createDroplets(THREE, scene, rnd, particles) {
     if(!d.state||d.state==='live')return 1;
     d.t+=dt;
     if(d.state==='pop'){if(d.t<.07)return 1+d.t/.07*.2;particles.burst(d.m.position,d.r);d.state='gone';d.t=0;return 0;}
-    if(d.state==='gone'){if(d.t>2.6){d.state='grow';d.t=0;d.x=(rnd()*2-1)*.92;d.py=.12+rnd()*.76;d.s0px=window.scrollY;d.moved=true;d.ph=rnd()*6.28;}return 0;}
+    if(d.state==='gone'){if(d.t>2.6){d.state='grow';d.t=0;d.phys=null;d.x=(rnd()*2-1)*.92;d.py=.12+rnd()*.76;d.s0px=window.scrollY;d.moved=true;d.ph=rnd()*6.28;}return 0;}
     var u=Math.min(1,d.t/.9);if(u>=1){d.state='live';return 1;}
     return easeOutBack(u);
   }
@@ -56,12 +58,14 @@ export function createDroplets(THREE, scene, rnd, particles) {
       var d=drops[i],ph=d.ph,sp=d.sp,tt=reduce?0:s.T;
       var yy=(.5-d.py)*2*v.halfH+((s.y-d.s0px)*d.f)*(2*v.halfH/v.H)+Math.sin(tt*.55*sp+ph)*d.ay+Math.sin(tt*1.1*sp+ph*2)*.04-pv*d.f*.5;
       var xx=d.x*v.halfW+Math.sin(tt*.38*sp+ph)*d.ax+Math.cos(tt*.23*sp+ph*1.7)*.12+s.mx*.08*d.f;
-      d.m.position.set(xx,yy,d.z);
+      var zz=d.z,q=d.phys;
+      if(q){var k=(CAMZ-q.z)/CAMZ;xx=q.x*k;yy=q.y*k;zz=q.z;}
+      d.m.position.set(xx,yy,zz);
       var ks=dropScale(d,s.dt);
       d.m.scale.setScalar(d.r*ks*(1+Math.sin(tt*.9*sp+ph)*.035));
       d.sh.scale.setScalar(d.r*.9*ks);
       d.m.visible=d.sh.visible=ks>.01&&Math.abs(yy)<v.halfH+1.8;
-      d.sh.position.set(xx+d.r*.3,yy-d.r*.42,d.z-.4);
+      d.sh.position.set(xx+d.r*.3,yy-d.r*.42,zz-.4);
     }
   }
 

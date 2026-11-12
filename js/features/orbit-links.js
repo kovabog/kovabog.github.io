@@ -14,7 +14,7 @@ var ORBIT_KEY = {
 export function initOrbitLinks() {
   var offTimer = null;
 
-  document.querySelectorAll('.lg,.iconrow span,.techrow span,.tool').forEach(function (el) {
+  document.querySelectorAll('.lg,.iconrow>span,.techrow>span,.tool').forEach(function (el) {
     var use = el.querySelector('use');
     if (!use) return;
     var iconId = (use.getAttribute('href') || '').split('#i-')[1];

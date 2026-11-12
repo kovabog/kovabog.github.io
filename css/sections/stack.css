@@ -3,7 +3,7 @@
 .comp{display:grid;grid-template-columns:minmax(200px,250px) 1fr;gap:clamp(18px,3vw,34px);align-items:center}
 .donut{position:relative;width:100%;max-width:250px;aspect-ratio:1;margin:0 auto}
 .donut svg{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
-.donut circle{fill:none;stroke-width:22;transition:stroke-dasharray 1.4s cubic-bezier(.2,.8,.2,1) var(--d,0s),stroke-width .25s,opacity .25s;cursor:pointer}
+.donut circle{fill:none;stroke-width:22;transition:stroke-dasharray 1.4s cubic-bezier(.2,.8,.2,1) var(--d,0s),stroke-width .25s,opacity .25s;cursor:help}
 .donut .track{stroke:rgba(20,48,47,.07);transition:none;cursor:default}
 .donut.hl circle.sl{opacity:.32}
 .donut.hl circle.sl.on{opacity:1;stroke-width:28}
@@ -11,7 +11,7 @@
 .donut .mid b{font:600 clamp(34px,4vw,46px)/1 var(--display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .donut .mid span{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);max-width:11ch;margin:0 auto}
 .legend{display:grid;gap:4px}
-.lg{display:grid;grid-template-columns:10px 26px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:12px;transition:background .2s;cursor:default}
+.lg{display:grid;grid-template-columns:10px 26px 1fr auto;gap:10px;align-items:center;padding:7px 10px;border-radius:12px;transition:background .2s;cursor:help}
 .lg:hover,.lg.on{background:rgba(255,255,255,.75)}
 .lg .dot{width:10px;height:10px;border-radius:50%;background:var(--c)}
 .lg .nm{font-size:15.5px;line-height:1.2}

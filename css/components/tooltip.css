@@ -1,0 +1,10 @@
+/* Hover tooltip for icon-only badges: <span data-tip="Name">. Text comes from the attribute. */
+[data-tip]{position:relative}
+[data-tip]::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);z-index:5;
+  transform:translate(-50%,4px);padding:4px 8px;border-radius:7px;background:var(--ink);color:var(--paper);
+  font:500 12px/1.2 var(--mono);white-space:nowrap;pointer-events:none;opacity:0;
+  transition:opacity .16s ease,transform .16s ease}
+[data-tip]:hover::after,[data-tip]:focus-visible::after{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){
+  [data-tip]::after{transition:none;transform:translate(-50%,0)}
+}
