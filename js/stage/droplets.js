@@ -8,8 +8,9 @@ import { CAMZ } from './context.js';
 
 var COUNT = 30;
 var EGG_POP_TARGET = 10;
+var DIAMOND_R = 1.5; // same disc radius as bubble-pile.js
 
-export function createDroplets(THREE, scene, rnd, particles) {
+export function createDroplets(THREE, scene, rnd, particles, crystal) {
   /* Temporary rain bubbles (spawn) are removed from `drops` once popped. */
   var dropMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:0,transmission:1,thickness:2.2,ior:1.4,
     attenuationColor:new THREE.Color(0xb9d3d5),attenuationDistance:3,envMapIntensity:2.2,clearcoat:1,clearcoatRoughness:0});
@@ -58,6 +59,15 @@ export function createDroplets(THREE, scene, rnd, particles) {
       var xx=d.x*v.halfW+Math.sin(tt*.38*sp+ph)*d.ax+Math.cos(tt*.23*sp+ph*1.7)*.12+s.mx*.08*d.f;
       var zz=d.z,q=d.phys;
       if(q){var k=(CAMZ-q.z)/CAMZ;xx=q.x*k;yy=q.y*k;zz=q.z;}
+      else if(crystal&&!d.temp){
+        // Drifting bubble: the diamond is a solid disc, so a bubble it touches is shoved aside (with a small gap) and eases back afterwards.
+        var kk=CAMZ/(CAMZ-zz),R=DIAMOND_R*crystal.scale.x*1.1+d.r;
+        d.ox=d.ox||0;d.oy=d.oy||0;
+        var ex=xx*kk+d.ox-crystal.position.x,ey=yy*kk+d.oy-crystal.position.y,dist=Math.hypot(ex,ey);
+        if(dist<R){if(dist<1e-6){ex=0;ey=1;dist=1;}d.ox+=ex/dist*(R-dist);d.oy+=ey/dist*(R-dist);}
+        else{var rel=Math.exp(-s.dt*.8);d.ox*=rel;d.oy*=rel;}
+        xx+=d.ox/kk;yy+=d.oy/kk;
+      }
       d.m.position.set(xx,yy,zz);
       var ks=dropScale(d,s.dt);
       d.m.scale.setScalar(d.r*ks*(1+Math.sin(tt*.9*sp+ph)*.035));

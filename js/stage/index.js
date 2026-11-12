@@ -49,7 +49,7 @@ function start(THREE) {
   var rnd = createRng(7);
   var textures = createTextures(THREE);
   var particles = createParticles(THREE, scene, rnd, textures);
-  var droplets = createDroplets(THREE, scene, rnd, particles);
+  var droplets = createDroplets(THREE, scene, rnd, particles, diamond.crystal);
 
   /* viewport + scroll mapping */
   var layout = createLayout(renderer, cam);
