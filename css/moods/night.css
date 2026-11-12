@@ -21,7 +21,7 @@ html.night{
 .night .snd:hover{background:rgba(255,255,255,.14)}
 .night .toast{color:#0e1b1d}
 .night .toast b{color:#1d6d68}
-.night .tool,.night .iconrow span,.night .techrow span{background:rgba(236,244,243,.9);border-color:rgba(255,255,255,.2);color:#4b6362}
+.night .tool,.night .iconrow>span,.night .techrow>span{background:rgba(236,244,243,.9);border-color:rgba(255,255,255,.2);color:#4b6362}
 .night .badge{background:rgba(255,255,255,.06)}
 .night .badge.hot{background:var(--ink);border-color:var(--ink);color:#0e1b1d}
 .night .badge.hot .li{color:#1d6d68}

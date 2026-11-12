@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bohdan Kovalenko</title>
 <meta name="description" content="Senior .NET Fullstack Developer. Features from first ticket to production, AI-native workflow.">
+<link rel="canonical" href="https://kovabog.github.io/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Bohdan Kovalenko">
+<meta property="og:url" content="https://kovabog.github.io/">
+<meta property="og:title" content="Bohdan Kovalenko · Senior .NET Fullstack Developer">
+<meta property="og:description" content="I build .NET products from first ticket to production. C#, .NET 8, Azure, SQL Server, Angular, React. AI-native workflow.">
+<meta property="og:image" content="https://kovabog.github.io/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bohdan Kovalenko, Senior Fullstack Developer: a glass diamond ringed by tech icons and a pixel-art bull terrier">
+<meta property="profile:first_name" content="Bohdan">
+<meta property="profile:last_name" content="Kovalenko">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
 <script src="js/boot/js-flag.js"></script>
@@ -19,6 +32,7 @@
 <link rel="stylesheet" href="css/components/icon.css">
 <link rel="stylesheet" href="css/components/sound-toggle.css">
 <link rel="stylesheet" href="css/components/toast.css">
+<link rel="stylesheet" href="css/components/tooltip.css">
 <link rel="stylesheet" href="css/components/terminal.css">
 <link rel="stylesheet" href="css/components/dog.css">
 <link rel="stylesheet" href="css/components/matrix.css">
@@ -67,8 +81,8 @@
       <a class="btn" href="#stack" data-go="stack">See what&rsquo;s inside</a>
       <a class="btn ghost" href="#contact" data-go="contact">Skip to the hello</a>
     </div>
-    <div class="iconrow reveal" style="--d:.3s" aria-label="Main technologies">
-      <span style="--d:0s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg></span><span style="--d:.4s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-dotnet"/></svg></span><span style="--d:.8s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-azure"/></svg></span><span style="--d:1.2s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg></span><span style="--d:1.6s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-angular"/></svg></span><span style="--d:2s"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-react"/></svg></span>
+    <div class="iconrow reveal" style="--d:.3s" role="list" aria-label="Main technologies">
+      <span role="listitem" style="--d:0s" data-tip="C#"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg><span class="vh">C#</span></span><span role="listitem" style="--d:.4s" data-tip=".NET"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-dotnet"/></svg><span class="vh">.NET</span></span><span role="listitem" style="--d:.8s" data-tip="Azure"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-azure"/></svg><span class="vh">Azure</span></span><span role="listitem" style="--d:1.2s" data-tip="SQL Server"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg><span class="vh">SQL Server</span></span><span role="listitem" style="--d:1.6s" data-tip="Angular"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-angular"/></svg><span class="vh">Angular</span></span><span role="listitem" style="--d:2s" data-tip="React"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-react"/></svg><span class="vh">React</span></span>
     </div>
     <div class="hint mono reveal" style="--d:.36s"><i></i>Drag the diamond. Pop a bubble or two.</div>
   </div></div>
@@ -131,8 +145,8 @@
           <span class="badge"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-spark"/></svg>AI-agent delivery</span>
           <span class="badge"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-gauge"/></svg>Performance tuning, for fun</span>
         </div>
-        <div class="techrow">
-          <span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-dotnet"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-azure"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-angular"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-docker"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-ado"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-cursor"/></svg></span>
+        <div class="techrow" role="list" aria-label="Stack at ELEKS">
+          <span role="listitem" data-tip="C#"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg><span class="vh">C#</span></span><span role="listitem" data-tip=".NET"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-dotnet"/></svg><span class="vh">.NET</span></span><span role="listitem" data-tip="SQL Server"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg><span class="vh">SQL Server</span></span><span role="listitem" data-tip="Azure"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-azure"/></svg><span class="vh">Azure</span></span><span role="listitem" data-tip="Angular"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-angular"/></svg><span class="vh">Angular</span></span><span role="listitem" data-tip="Docker"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-docker"/></svg><span class="vh">Docker</span></span><span role="listitem" data-tip="Azure DevOps"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-ado"/></svg><span class="vh">Azure DevOps</span></span><span role="listitem" data-tip="Cursor"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-cursor"/></svg><span class="vh">Cursor</span></span>
         </div>
       </article>
 
@@ -145,8 +159,8 @@
           <span class="badge"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-gauge"/></svg>React and SQL tuning</span>
           <span class="badge"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-db"/></svg>GraphQL, MongoDB</span>
         </div>
-        <div class="techrow">
-          <span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-react"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-redux"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-ts"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-mongo"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-gql"/></svg></span>
+        <div class="techrow" role="list" aria-label="Stack at Gentlecode">
+          <span role="listitem" data-tip="React"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-react"/></svg><span class="vh">React</span></span><span role="listitem" data-tip="Redux"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-redux"/></svg><span class="vh">Redux</span></span><span role="listitem" data-tip="TypeScript"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-ts"/></svg><span class="vh">TypeScript</span></span><span role="listitem" data-tip="C#"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg><span class="vh">C#</span></span><span role="listitem" data-tip="MongoDB"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-mongo"/></svg><span class="vh">MongoDB</span></span><span role="listitem" data-tip="GraphQL"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-gql"/></svg><span class="vh">GraphQL</span></span>
         </div>
       </article>
 
@@ -158,7 +172,7 @@
           <span class="badge hot"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-plug"/></svg>Payment and media APIs</span>
           <span class="badge"><svg class="li" aria-hidden="true"><use href="img/icons.svg#l-bug"/></svg>Scrapers and parsers</span>
         </div>
-        <div class="techrow"><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg></span><span><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg></span></div>
+        <div class="techrow" role="list" aria-label="Stack at Biencode"><span role="listitem" data-tip="C#"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-csharp"/></svg><span class="vh">C#</span></span><span role="listitem" data-tip="SQL Server"><svg class="ic" aria-hidden="true"><use href="img/icons.svg#i-sql"/></svg><span class="vh">SQL Server</span></span></div>
       </article>
 
       <div class="card pad reveal meta">

@@ -38,11 +38,12 @@ img/
   dog-run.png         walk-cycle sprite sheet: 3 frames side by side, 621x467 each
   dog-sit.png         dog sitting on the "Dog owner" tile
   dog-walk.png        old single-frame dog, currently unused
+  og.png              1200x630 link preview (og:image); a screenshot of the hero scene with name + dog
 css/                  loaded in this order by <link> tags in index.html
   base/               tokens.css (colors, fonts – the only place for :root vars), reset, typography,
                       motion (.reveal states + reduced-motion)
   layout/             page.css (sections, wraps, panels, footer), nav.css
-  components/         button, card, icon, sound-toggle, toast, terminal (TDD demo), dog,
+  components/         button, card, icon, sound-toggle, toast, tooltip ([data-tip]), terminal (TDD demo), dog,
                       matrix, dev-mode, confetti, rubber-band (easter-egg overlays)
   sections/           one file per section: hero, stack, path, numbers, craft, human, contact
   stage/stage.css     WebGL canvas layer, HUD, no-gl fallback, drag cursor

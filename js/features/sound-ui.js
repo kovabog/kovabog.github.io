@@ -26,7 +26,7 @@ export function initSoundUi() {
   var lastHovered = null;
   document.addEventListener('pointerover', function (e) {
     if (e.pointerType !== 'mouse') return;
-    var t = e.target.closest && e.target.closest('.tool,.iconrow span,.techrow span,.lg,.badge,.dom,.chip,.tile');
+    var t = e.target.closest && e.target.closest('.tool,.iconrow>span,.techrow>span,.lg,.badge,.dom,.chip,.tile');
     if (t !== lastHovered) {
       lastHovered = t;
       if (t) sfx.tick();
