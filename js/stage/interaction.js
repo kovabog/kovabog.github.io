@@ -57,7 +57,7 @@ export function createInteraction(THREE, scene3d) {
     if (pressed && e.pointerId === pressed.id) {
       var touch = pressed.type === 'touch';
       if (Math.hypot(e.clientX - pressed.x, e.clientY - pressed.y) < (touch ? DRAG_PX_TOUCH : DRAG_PX)) return;
-      if (touch && performance.now() - pressed.t < TOUCH_HOLD_MS) { pressed = null; return; } // a swipe: let the page scroll
+      if (touch && performance.now() - pressed.t < TOUCH_HOLD_MS) { pressed = null; setTouchBlock(false); return; } // a swipe: let the page scroll
       startBubbleDrag(e);
       return;
     }
@@ -70,10 +70,15 @@ export function createInteraction(THREE, scene3d) {
     root.style.cursor = h ? 'grab' : '';
   }, { passive: true });
 
-  /* While a bubble is held (or pressed long enough to become a drag) the finger moves the bubble, not the page. */
-  window.addEventListener('touchmove', function (e) {
+  /* While a bubble is held (or pressed long enough to become a drag) the finger moves the bubble, not the page.
+     The blocking listener only exists while a bubble is pressed by touch, so normal scrolling never waits for it. */
+  function blockTouchScroll(e) {
     if (held || (pressed && performance.now() - pressed.t >= TOUCH_HOLD_MS)) e.preventDefault();
-  }, { passive: false });
+  }
+  function setTouchBlock(on) {
+    if (on) window.addEventListener('touchmove', blockTouchScroll, { passive: false });
+    else window.removeEventListener('touchmove', blockTouchScroll, { passive: false });
+  }
 
   function startBubbleDrag(e) {
     var d = pressed.d;
@@ -93,6 +98,7 @@ export function createInteraction(THREE, scene3d) {
       if (!cancelled && e) popDrop(pressed.d);
       pressed = null;
     }
+    if (!held && !pressed) setTouchBlock(false);
   }
 
   window.addEventListener('pointerdown', function (e) {
@@ -102,6 +108,7 @@ export function createInteraction(THREE, scene3d) {
       if (!pile) { popDrop(h.d); return; }
       if (e.pointerType !== 'touch') e.preventDefault(); // no text selection while dragging a bubble
       pressed = { d: h.d, id: e.pointerId, type: e.pointerType, x: e.clientX, y: e.clientY, t: performance.now() };
+      if (e.pointerType === 'touch') setTouchBlock(true);
       return;
     }
     if (e.pointerType === 'touch') {

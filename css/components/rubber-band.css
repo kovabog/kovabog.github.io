@@ -1,0 +1,4 @@
+/* Rubber band at the bottom of the page (easter egg, see js/features/rubber-band.js). */
+.end-note{position:fixed;left:50%;bottom:22px;z-index:8;pointer-events:none;transform:translate(-50%,10px);opacity:0;
+  color:var(--teal);text-align:center;max-width:calc(100vw - 32px);transition:opacity .25s,transform .35s cubic-bezier(.3,1.5,.5,1)}
+.end-note.on{opacity:1;transform:translate(-50%,0)}
